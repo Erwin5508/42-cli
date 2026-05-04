@@ -5,6 +5,20 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.2.5',
+    date: '2026-05-04',
+    notes_en: [
+      'Per-function tests no longer get blocked by an unrelated broken prototype. Until now the standalone runner defined `HAVE_FT_<fn>` for every `ft_*.c` it could compile, which activated every matching test body. So if you asked for `ft_itoa` and your `libft.h` declared, say, `ft_strmapi` with the wrong return type (`char` instead of `char *`), the tester compile would explode on `test_strmapi` — a function nobody asked about. The runner now only defines `HAVE_FT_<fn>` for the functions you actually targeted; other `ft_*.c` files still link (so cross-file helpers like `ft_strjoin` → `ft_strlen` resolve), but their test bodies stay gated out.',
+      'New hint when a wrong prototype is the cause: instead of the misleading "linking failed" message, the build-error summary now says "your libft.h declares one of the targeted functions with the wrong signature — check the return type and parameter list against the subject" when the compiler output points at a tester.c type mismatch.',
+      'The "Test specific functions…" prompt now leads with the `ft_` prefix and a concrete example (`ft_itoa, ft_split`). The function catalog header calls out "always with the ft_ prefix", and the unknown-function error suggests the prefix explicitly. The parser still tolerates bare names so older muscle memory keeps working — the UI just stops pretending both forms are equally canonical.',
+    ],
+    notes_fr: [
+      'Les tests par fonction ne sont plus bloqués par un prototype cassé sans rapport. Jusqu\'ici, le runner standalone définissait `HAVE_FT_<fn>` pour chaque `ft_*.c` qu\'il arrivait à compiler, ce qui activait chaque corps de test correspondant. Donc si vous demandiez `ft_itoa` et que votre `libft.h` déclarait, disons, `ft_strmapi` avec le mauvais type de retour (`char` au lieu de `char *`), la compilation du testeur explosait sur `test_strmapi` — une fonction que personne n\'avait demandée. Le runner ne définit désormais `HAVE_FT_<fn>` que pour les fonctions ciblées ; les autres `ft_*.c` sont toujours liés (les helpers inter-fichiers type `ft_strjoin` → `ft_strlen` résolvent), mais leurs corps de test restent désactivés.',
+      'Nouveau message quand un mauvais prototype est en cause : au lieu du « linking failed » trompeur, le résumé d\'erreur de build dit maintenant « votre libft.h déclare l\'une des fonctions ciblées avec la mauvaise signature — vérifiez le type de retour et les paramètres par rapport au sujet » quand la sortie du compilateur pointe une incohérence de types dans tester.c.',
+      'Le prompt « Tester des fonctions spécifiques… » commence désormais par le préfixe `ft_` et un exemple concret (`ft_itoa, ft_split`). L\'en-tête du catalogue précise « toujours avec le préfixe ft_ », et le message d\'erreur sur fonction inconnue le rappelle explicitement. Le parser accepte toujours les noms sans préfixe pour ne pas casser la mémoire musculaire — l\'interface arrête juste de prétendre que les deux formes sont équivalentes.',
+    ],
+  },
+  {
     version: '0.2.4',
     date: '2026-05-04',
     notes_en: [

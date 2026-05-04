@@ -73,10 +73,10 @@ module.exports = {
   'libft.enterPath': 'No — enter a path',
   'libft.fallbackToPathEntry': 'falling back to path entry.',
   'libft.functionsPrompt':
-    'Functions to test (comma/space separated, ft_ prefix optional, blank to cancel):',
-  'libft.catalogHeader': 'available functions:',
+    'Functions to test — use the ft_ prefix (e.g. ft_itoa, ft_split). Comma/space separated, blank to cancel:',
+  'libft.catalogHeader': 'available functions (always with the ft_ prefix):',
   'libft.unknownFunctions': 'unknown function(s): {names}',
-  'libft.tryListHint': 'try: type "list" to see the catalog, or check the ft_ prefix.',
+  'libft.tryListHint': 'remember the ft_ prefix (e.g. ft_itoa, not itoa) — or type "list" to see the full catalog.',
   'libft.pathLabel': 'libft path:',
   'libft.action': 'Libft — what do you want to do?',
   'libft.testAll': 'Test all 42 functions',

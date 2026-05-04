@@ -298,9 +298,16 @@ async function buildStandalone(libftPath, targets) {
     compiled.push(fn);
   }
 
-  // Tester is compiled against the set of functions we successfully built,
-  // so HAVE_FT_* gates match what's actually linkable.
-  const defines = compiled.map((fn) => `-DHAVE_FT_${fn}`);
+  // Only activate test bodies for the functions the user asked for. Other
+  // ft_*.c files are still linked (cross-file helpers — e.g. ft_strjoin
+  // calling ft_strlen — must resolve), but their test bodies stay gated out.
+  // If we defined HAVE_FT_<fn> for every compiled source, a broken prototype
+  // in the student's libft.h (e.g. `char ft_strmapi(...)` instead of
+  // `char *ft_strmapi(...)`) would block testing an unrelated function like
+  // ft_itoa, since test_strmapi's body would activate and fail to typecheck.
+  const defines = compiled
+    .filter((fn) => targets.includes(fn))
+    .map((fn) => `-DHAVE_FT_${fn}`);
   const testerObj = path.join(STANDALONE_DIR, 'tester.o');
   const compileTester = await spawnAsync('cc', [
     '-c', path.join(TESTER_DIR, 'tester.c'),
@@ -442,11 +449,29 @@ function summarize(result) {
       buildOut.split('\n').slice(-12).forEach((l) => lines.push(`    ${c.dim(l)}`));
     }
     if (result.standalone) {
-      lines.push(
-        c.yellow('  hint:') +
-          ' the targeted source compiled, but linking failed — usually a missing helper ' +
-          'in another ft_*.c file the targeted function calls.'
-      );
+      const out = (result.stderr || '') + (result.stdout || '');
+      const looksLikeLink = /undefined reference|undefined symbol|ld: symbol/i.test(out);
+      const looksLikeProto = /tester\.c:\s*\d+:.*error|implicit declaration|incompatible pointer types|makes pointer from integer/i.test(out);
+      if (looksLikeProto && !looksLikeLink) {
+        lines.push(
+          c.yellow('  hint:') +
+            ' the targeted source compiled, but the tester won\'t — your libft.h ' +
+            'declares one of the targeted functions with the wrong signature ' +
+            '(check the return type and parameter list against the subject).'
+        );
+      } else if (looksLikeLink) {
+        lines.push(
+          c.yellow('  hint:') +
+            ' the targeted source compiled, but linking failed — usually a missing helper ' +
+            'in another ft_*.c file the targeted function calls.'
+        );
+      } else {
+        lines.push(
+          c.yellow('  hint:') +
+            ' targeted source compiled cleanly. The tester or link step failed — ' +
+            'check the message above for the offending file:line.'
+        );
+      }
     } else {
       lines.push(
         c.yellow('  hint:') +

@@ -74,10 +74,10 @@ module.exports = {
   'libft.enterPath': 'Non — saisir un chemin',
   'libft.fallbackToPathEntry': 'saisie de chemin manuelle.',
   'libft.functionsPrompt':
-    'Fonctions à tester (séparées par virgule/espace, préfixe ft_ optionnel, vide pour annuler) :',
-  'libft.catalogHeader': 'fonctions disponibles :',
+    'Fonctions à tester — avec le préfixe ft_ (ex. ft_itoa, ft_split). Séparées par virgule/espace, vide pour annuler :',
+  'libft.catalogHeader': 'fonctions disponibles (toujours avec le préfixe ft_) :',
   'libft.unknownFunctions': 'fonction(s) inconnue(s) : {names}',
-  'libft.tryListHint': 'tapez « list » pour voir le catalogue, ou vérifiez le préfixe ft_.',
+  'libft.tryListHint': 'pensez au préfixe ft_ (ex. ft_itoa, pas itoa) — ou tapez « list » pour voir le catalogue complet.',
   'libft.pathLabel': 'chemin libft :',
   'libft.action': 'Libft — que voulez-vous faire ?',
   'libft.testAll': 'Tester les 42 fonctions',
