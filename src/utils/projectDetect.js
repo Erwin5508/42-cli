@@ -17,6 +17,21 @@ function isLibftDir(dir) {
   return entries.some((f) => /^ft_.*\.c$/.test(f));
 }
 
+// Permissive variant for the libft menu: per-function tests only need a
+// source file and the standalone runner synthesizes a libft.h if missing.
+// Insisting on Makefile + header here would block users who haven't set
+// those up yet from testing the one function they just wrote.
+function hasLibftSources(dir) {
+  try {
+    if (!fs.statSync(dir).isDirectory()) return false;
+  } catch {
+    return false;
+  }
+  let entries;
+  try { entries = fs.readdirSync(dir); } catch { return false; }
+  return entries.some((f) => /^ft_.*\.c$/.test(f));
+}
+
 function isFtPrintfDir(dir) {
   try {
     if (!fs.statSync(dir).isDirectory()) return false;
@@ -61,4 +76,11 @@ function findBundledLibft(printfPath) {
   return isLibftDir(candidate) ? candidate : null;
 }
 
-module.exports = { isLibftDir, isFtPrintfDir, isGnlDir, resolveLibftPath, findBundledLibft };
+module.exports = {
+  isLibftDir,
+  hasLibftSources,
+  isFtPrintfDir,
+  isGnlDir,
+  resolveLibftPath,
+  findBundledLibft,
+};

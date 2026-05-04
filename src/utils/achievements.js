@@ -29,6 +29,21 @@ function uniqueCount(arr) {
   return Array.isArray(arr) ? arr.length : 0;
 }
 
+// Inspect a tester's captured stdout to decide whether literally every group
+// failed (0 / N passed). All three C testers print one summary line that
+// matches `Functions: X / Y passed` (libft) or `Groups: X / Y passed`
+// (ft_printf, gnl). We strip ANSI and grep that line — if X is 0 and Y > 0,
+// the run earned the legendary "fail everything" achievement.
+function isTotalWipeout(stdout) {
+  if (!stdout) return false;
+  const plain = stdout.replace(/\x1b\[[0-9;]*m/g, '');
+  const m = plain.match(/(?:Functions|Groups):\s*(\d+)\s*\/\s*(\d+)\s*passed/i);
+  if (!m) return false;
+  const passed = parseInt(m[1], 10);
+  const total = parseInt(m[2], 10);
+  return total > 0 && passed === 0;
+}
+
 const ACHIEVEMENTS = [
   // ───── LOYALTY ─────
   { id: 'first_steps', rarity: 'common', badge: '🌱',
@@ -207,6 +222,12 @@ const ACHIEVEMENTS = [
     desc_en: 'Fail 50 tests in total. Therapy is real.',
     desc_fr: 'Échouer 50 tests au total. La thérapie est une option valide.',
     check: (s) => (s.testsFailed || 0) >= 50 },
+
+  { id: 'total_wipeout', rarity: 'legendary', badge: '☠',
+    name_en: 'Total Wipeout', name_fr: 'Effacement total',
+    desc_en: 'Fail every single test in a tester run. Zero out of all of them.',
+    desc_fr: 'Échouer absolument tous les tests d\'un même run. Zéro sur la totale.',
+    check: (s, ctx) => ctx && ctx.event === 'test' && ctx.allFailed === true },
 
   { id: 'practice_perfect', rarity: 'uncommon', badge: '✨',
     name_en: 'Practice Makes Perfect', name_fr: 'C\'est en forgeant',
@@ -485,4 +506,5 @@ module.exports = {
   evaluate, announceNew, printToast,
   nameOf, descOf, paintRarity, rarityLabel, unlockedSet,
   EASY_FUNCTIONS, HARD_FUNCTIONS,
+  isTotalWipeout,
 };

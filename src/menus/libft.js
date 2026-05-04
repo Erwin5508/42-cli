@@ -3,7 +3,7 @@
 const { select } = require('../ui/select');
 const { input } = require('../ui/input');
 const c = require('../ui/colors');
-const { isLibftDir, resolveLibftPath } = require('../utils/projectDetect');
+const { hasLibftSources, resolveLibftPath } = require('../utils/projectDetect');
 const tester = require('../runners/libftTester');
 const norm = require('../runners/norminette');
 const compliance = require('../runners/subjectCheck');
@@ -21,16 +21,30 @@ function presentImplementedTargets(libftPath) {
   }
 }
 
+function availableSourceTargets(libftPath) {
+  try {
+    return tester.listAvailableSources
+      ? tester.listAvailableSources(libftPath).present
+      : tester.FUNCTIONS;
+  } catch {
+    return tester.FUNCTIONS;
+  }
+}
+
 function recordTesterResult(libftPath, targets, result) {
   const passed = result && result.exitCode === 0 && result.stage === 'run';
   const effective = Array.isArray(targets) && targets.length
     ? targets
     : presentImplementedTargets(libftPath);
   stats.recordTestRun({ targets: effective, passed });
+  // allFailed only fires on a run that actually reached the C tester (stage
+  // 'run'); a build error means we never produced a per-function summary.
+  const allFailed = result && result.stage === 'run' && ach.isTotalWipeout(result.stdout || '');
   const newly = ach.evaluate({
     event: 'test',
     targets: effective,
     passed,
+    allFailed,
     now: new Date(),
   });
   ach.announceNew(newly);
@@ -52,7 +66,7 @@ async function promptForCustomPath() {
     const raw = await input({ message: t('libft.pathPrompt') });
     if (!raw) return null;
     const abs = resolveLibftPath(raw);
-    if (!isLibftDir(abs)) {
+    if (!hasLibftSources(abs)) {
       console.log(c.red(`  ✗ ${abs}`));
       console.log(c.yellow(`     ${t('libft.notLibft')}`));
       continue;
@@ -73,7 +87,7 @@ async function pickLibftPath() {
   });
   if (here === 'back') return null;
   if (here === 'yes') {
-    if (isLibftDir(cwd)) return cwd;
+    if (hasLibftSources(cwd)) return cwd;
     console.log(c.red(`  ✗ ${cwd}`));
     console.log(c.yellow(`     ${t('libft.notLibft')}`));
     console.log(c.dim(`     ${t('libft.fallbackToPathEntry')}`));
@@ -168,7 +182,7 @@ async function run() {
       if (!fns) continue;
       const label = fns.length === 1 ? `ft_${fns[0]}` : `${fns.length} functions`;
       await section(`tests · ${label}`, async () => {
-        const r = await tester.runTester(libftPath, fns);
+        const r = await tester.runTesterStandalone(libftPath, fns);
         const s = tester.summarize(r);
         if (s) console.log(s);
         recordTesterResult(libftPath, fns, r);

@@ -7,6 +7,81 @@ const c = require('../ui/colors');
 
 const TESTER_DIR = path.join(__dirname, '..', '..', 'resources', 'tester');
 const TESTER_BIN = path.join(TESTER_DIR, '42_tester');
+// Working directory for the standalone (Makefile-less) build path. We write
+// per-function .o files and a fallback libft.h here, then link from the same
+// place. Kept inside TESTER_DIR so cleanup is local and the user's project
+// is never touched.
+const STANDALONE_DIR = path.join(TESTER_DIR, '.standalone');
+
+const STANDALONE_CFLAGS = ['-Wall', '-Wextra', '-Werror', '-O0', '-g', '-Wno-unused-function'];
+const ASAN_FLAGS = ['-fsanitize=address', '-fno-omit-frame-pointer'];
+
+// Fallback libft.h used only when the student hasn't written one yet. Has
+// every prototype the tester touches, including t_list. The user's libft.h
+// (if present) wins because `#include "libft.h"` resolves the source file's
+// own directory before any -I path.
+const STANDALONE_HEADER = `#ifndef LIBFT_H
+# define LIBFT_H
+# include <stddef.h>
+
+typedef struct s_list {
+	void			*content;
+	struct s_list	*next;
+}	t_list;
+
+int		ft_isalpha(int);
+int		ft_isdigit(int);
+int		ft_isalnum(int);
+int		ft_isascii(int);
+int		ft_isprint(int);
+int		ft_toupper(int);
+int		ft_tolower(int);
+
+size_t	ft_strlen(const char *);
+char	*ft_strchr(const char *, int);
+char	*ft_strrchr(const char *, int);
+int		ft_strncmp(const char *, const char *, size_t);
+char	*ft_strnstr(const char *, const char *, size_t);
+char	*ft_strdup(const char *);
+
+void	*ft_memset(void *, int, size_t);
+void	ft_bzero(void *, size_t);
+void	*ft_memcpy(void *, const void *, size_t);
+void	*ft_memmove(void *, const void *, size_t);
+void	*ft_memchr(const void *, int, size_t);
+int		ft_memcmp(const void *, const void *, size_t);
+
+size_t	ft_strlcpy(char *, const char *, size_t);
+size_t	ft_strlcat(char *, const char *, size_t);
+
+int		ft_atoi(const char *);
+void	*ft_calloc(size_t, size_t);
+char	*ft_itoa(int);
+
+char	*ft_substr(char const *, unsigned int, size_t);
+char	*ft_strjoin(char const *, char const *);
+char	*ft_strtrim(char const *, char const *);
+char	**ft_split(char const *, char);
+char	*ft_strmapi(char const *, char (*)(unsigned int, char));
+void	ft_striteri(char *, void (*)(unsigned int, char *));
+
+void	ft_putchar_fd(char, int);
+void	ft_putstr_fd(char *, int);
+void	ft_putendl_fd(char *, int);
+void	ft_putnbr_fd(int, int);
+
+t_list	*ft_lstnew(void *);
+void	ft_lstadd_front(t_list **, t_list *);
+int		ft_lstsize(t_list *);
+t_list	*ft_lstlast(t_list *);
+void	ft_lstadd_back(t_list **, t_list *);
+void	ft_lstdelone(t_list *, void (*)(void *));
+void	ft_lstclear(t_list **, void (*)(void *));
+void	ft_lstiter(t_list *, void (*)(void *));
+t_list	*ft_lstmap(t_list *, void *(*)(void *), void (*)(void *));
+
+#endif
+`;
 
 const FUNCTIONS = [
   'isalpha', 'isdigit', 'isalnum', 'isascii', 'isprint',
@@ -155,6 +230,171 @@ async function runTester(libftPath, targets) {
   };
 }
 
+function listAvailableSources(libftPath) {
+  const present = [];
+  const missing = [];
+  for (const fn of FUNCTIONS) {
+    if (fs.existsSync(path.join(libftPath, `ft_${fn}.c`))) present.push(fn);
+    else missing.push(fn);
+  }
+  return { present, missing };
+}
+
+function resetStandaloneDir() {
+  try { fs.rmSync(STANDALONE_DIR, { recursive: true, force: true }); } catch {}
+  fs.mkdirSync(STANDALONE_DIR, { recursive: true });
+}
+
+async function buildStandalone(libftPath, targets) {
+  const opts = {
+    stdio: ['ignore', 'pipe', 'pipe'],
+    streamStdout: false,
+    streamStderr: false,
+  };
+
+  resetStandaloneDir();
+  // Drop the fallback header — only used when the student's libft.h is
+  // missing (the source file's own directory is searched first by
+  // `#include "libft.h"`).
+  fs.writeFileSync(path.join(STANDALONE_DIR, 'libft.h'), STANDALONE_HEADER);
+
+  const { present } = listAvailableSources(libftPath);
+  const missingTargets = targets.filter((fn) => !present.includes(fn));
+  if (missingTargets.length > 0) {
+    return {
+      exitCode: 1,
+      stage: 'build',
+      stderr: `missing source file(s): ${missingTargets.map((fn) => `ft_${fn}.c`).join(', ')}\n`,
+      stdout: '',
+      missingSources: missingTargets,
+    };
+  }
+
+  // Compile every available ft_*.c, not just the targeted ones — student's
+  // ft_split may call ft_strlen from a sibling file. Drop sources that fail
+  // to build silently *unless* one of the targeted functions is the offender,
+  // in which case we surface the error.
+  const includeFlags = ['-I', libftPath, '-I', STANDALONE_DIR];
+  const compileFlags = [...STANDALONE_CFLAGS, ...ASAN_FLAGS, ...includeFlags];
+  const objs = [];
+  const compiled = [];
+  for (const fn of present) {
+    const src = path.join(libftPath, `ft_${fn}.c`);
+    const obj = path.join(STANDALONE_DIR, `ft_${fn}.o`);
+    const r = await spawnAsync('cc', ['-c', src, '-o', obj, ...compileFlags], opts);
+    if (r.exitCode !== 0) {
+      if (targets.includes(fn)) {
+        return {
+          exitCode: r.exitCode,
+          stage: 'build',
+          stdout: r.stdout,
+          stderr: r.stderr,
+          failedSource: `ft_${fn}.c`,
+        };
+      }
+      continue;
+    }
+    objs.push(obj);
+    compiled.push(fn);
+  }
+
+  // Tester is compiled against the set of functions we successfully built,
+  // so HAVE_FT_* gates match what's actually linkable.
+  const defines = compiled.map((fn) => `-DHAVE_FT_${fn}`);
+  const testerObj = path.join(STANDALONE_DIR, 'tester.o');
+  const compileTester = await spawnAsync('cc', [
+    '-c', path.join(TESTER_DIR, 'tester.c'),
+    '-o', testerObj,
+    ...STANDALONE_CFLAGS,
+    ...ASAN_FLAGS,
+    ...defines,
+    ...includeFlags,
+  ], opts);
+  if (compileTester.exitCode !== 0) {
+    return {
+      exitCode: compileTester.exitCode,
+      stage: 'build',
+      stdout: compileTester.stdout,
+      stderr: compileTester.stderr,
+    };
+  }
+
+  const link = await spawnAsync('cc', [
+    testerObj, ...objs,
+    '-o', TESTER_BIN,
+    ...ASAN_FLAGS,
+  ], opts);
+  if (link.exitCode !== 0) {
+    return {
+      exitCode: link.exitCode,
+      stage: 'build',
+      stdout: link.stdout,
+      stderr: link.stderr,
+    };
+  }
+  return { exitCode: 0, stage: 'build', stdout: '', stderr: '' };
+}
+
+async function runTesterStandalone(libftPath, targets) {
+  const requested = Array.isArray(targets) ? targets : (targets ? [targets] : []);
+  if (requested.length === 0) {
+    return {
+      exitCode: 1,
+      stage: 'setup',
+      error: 'standalone mode requires at least one target function',
+    };
+  }
+  if (!fs.existsSync(path.join(TESTER_DIR, 'tester.c'))) {
+    return {
+      exitCode: 1,
+      stage: 'setup',
+      error: `Bundled tester source not found at ${TESTER_DIR}`,
+    };
+  }
+
+  process.stdout.write(c.dim('  building (standalone — no Makefile required)…\n'));
+  const built = await buildStandalone(libftPath, requested);
+  if (built.exitCode !== 0) {
+    return {
+      exitCode: built.exitCode,
+      stage: built.stage || 'build',
+      stdout: built.stdout,
+      stderr: built.stderr,
+      missingSources: built.missingSources,
+      failedSource: built.failedSource,
+      standalone: true,
+    };
+  }
+
+  process.stdout.write('\n');
+  const args = ['--color', ...requested];
+  const asanOpts = [
+    'abort_on_error=0',
+    'halt_on_error=1',
+    'detect_leaks=0',
+    'print_stacktrace=1',
+    'symbolize=1',
+    'color=always',
+  ].join(':');
+  const run = await spawnAsync(TESTER_BIN, args, {
+    stdio: ['inherit', 'pipe', 'pipe'],
+    cwd: TESTER_DIR,
+    env: {
+      ...process.env,
+      ASAN_OPTIONS: asanOpts,
+      UBSAN_OPTIONS: 'print_stacktrace=1',
+    },
+  });
+  return {
+    exitCode: run.exitCode,
+    stage: 'run',
+    stdout: run.stdout,
+    stderr: run.stderr,
+    error: run.error,
+    standalone: true,
+  };
+}
+
 function summarize(result) {
   const lines = [];
   if (result.stage === 'setup') {
@@ -164,6 +404,25 @@ function summarize(result) {
   }
   if (result.stage === 'build') {
     lines.push('', `${c.bold('Result:')} ${c.red('FAIL — build error')}`);
+    if (result.missingSources && result.missingSources.length > 0) {
+      const files = result.missingSources.map((fn) => `ft_${fn}.c`).join(', ');
+      lines.push(`  ${c.yellow('cause:')} source file(s) not found: ${c.bold(files)}`);
+      lines.push(
+        `  ${c.dim('drop the implementation file in the libft directory and try again.')}`
+      );
+      return lines.join('\n');
+    }
+    if (result.failedSource) {
+      lines.push(
+        `  ${c.yellow('cause:')} ${c.bold(result.failedSource)} failed to compile`
+      );
+      const buildOut = (result.stderr && result.stderr.trim()) || (result.stdout && result.stdout.trim());
+      if (buildOut) {
+        lines.push(c.yellow('  compiler output (last 12 lines):'));
+        buildOut.split('\n').slice(-12).forEach((l) => lines.push(`    ${c.dim(l)}`));
+      }
+      return lines.join('\n');
+    }
     if (result.mainOffenders && result.mainOffenders.length > 0) {
       lines.push(
         `  ${c.yellow('cause:')} found ${c.bold('main()')} in ${c.bold(result.mainOffenders.join(', '))}`
@@ -182,10 +441,19 @@ function summarize(result) {
       lines.push(c.yellow('  build output (last 12 lines):'));
       buildOut.split('\n').slice(-12).forEach((l) => lines.push(`    ${c.dim(l)}`));
     }
-    lines.push(
-      c.yellow('  hint:') +
-        ' make sure all 42 ft_* functions are implemented and the Makefile builds libft.a.'
-    );
+    if (result.standalone) {
+      lines.push(
+        c.yellow('  hint:') +
+          ' the targeted source compiled, but linking failed — usually a missing helper ' +
+          'in another ft_*.c file the targeted function calls.'
+      );
+    } else {
+      lines.push(
+        c.yellow('  hint:') +
+          ' make sure all 42 ft_* functions are implemented and the Makefile builds libft.a, ' +
+          'or use "Test specific functions" to skip the Makefile entirely.'
+      );
+    }
     return lines.join('\n');
   }
   // run stage — the C tester already printed its own pretty summary,
@@ -217,4 +485,12 @@ function summarize(result) {
   return '';
 }
 
-module.exports = { runTester, summarize, FUNCTIONS, TESTER_DIR, detectImplemented };
+module.exports = {
+  runTester,
+  runTesterStandalone,
+  summarize,
+  FUNCTIONS,
+  TESTER_DIR,
+  detectImplemented,
+  listAvailableSources,
+};

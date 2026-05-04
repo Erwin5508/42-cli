@@ -36,6 +36,19 @@
 # endif
 #endif
 
+/* The list section unconditionally references t_list (helper + tests). When
+ * we're testing a non-bonus subset (e.g. only ft_strlen) and the student's
+ * libft.h does not declare t_list, that block fails to compile. Gate the
+ * whole section on at least one HAVE_FT_lst* so a partial pick stays
+ * buildable. */
+#if defined(HAVE_FT_lstnew) || defined(HAVE_FT_lstadd_front) \
+	|| defined(HAVE_FT_lstsize) || defined(HAVE_FT_lstlast) \
+	|| defined(HAVE_FT_lstadd_back) || defined(HAVE_FT_lstdelone) \
+	|| defined(HAVE_FT_lstclear) || defined(HAVE_FT_lstiter) \
+	|| defined(HAVE_FT_lstmap)
+# define HAVE_LIBFT_LIST
+#endif
+
 #define MSG_LEN 256
 #define NAME_W  18
 
@@ -633,6 +646,7 @@ static void	test_strtrim(t_test *t)
 {
 #ifdef HAVE_FT_strtrim
 	char *r;
+
 	r = ft_strtrim("  hello  ", " ");
 	EXPECT(r && strcmp(r, "hello") == 0,
 		"strtrim spaces: expected \"hello\", got \"%s\"", r ? r : "(null)");
@@ -650,6 +664,46 @@ static void	test_strtrim(t_test *t)
 	r = ft_strtrim("", "x");
 	EXPECT(r && strcmp(r, "") == 0, "strtrim empty source");
 	free(r);
+	/* `set` is a SET of characters, not a substring. Common student bug:
+	 * `if (startswith(s, set))` instead of `if (s[i] is any of set)`. The
+	 * mixed leading "ab" / trailing "ba" forces correct set-membership. */
+	r = ft_strtrim("ab middle ba", "ab");
+	EXPECT(r && strcmp(r, " middle ") == 0,
+		"strtrim multi-char set: expected \" middle \", got \"%s\"",
+		r ? r : "(null)");
+	free(r);
+	/* Set chars present internally must NOT be trimmed — only leading and
+	 * trailing runs. Catches "iterate everywhere" implementations. */
+	r = ft_strtrim("aXbbXa", "a");
+	EXPECT(r && strcmp(r, "XbbX") == 0,
+		"strtrim must not trim internal occurrences: got \"%s\"",
+		r ? r : "(null)");
+	free(r);
+	/* Mixed whitespace set — the realistic use case. */
+	r = ft_strtrim("\t \nhello\n \t", " \t\n");
+	EXPECT(r && strcmp(r, "hello") == 0,
+		"strtrim whitespace set: got \"%s\"", r ? r : "(null)");
+	free(r);
+	/* Empty set: nothing belongs to it, nothing gets trimmed. */
+	r = ft_strtrim("hello", "");
+	EXPECT(r && strcmp(r, "hello") == 0,
+		"strtrim with empty set must return a copy of the input");
+	free(r);
+	/* Whole string is the set — both ends meet, must not under/overshoot. */
+	r = ft_strtrim("ababab", "ab");
+	EXPECT(r && strcmp(r, "") == 0,
+		"strtrim entire string trimmed (multi-char set)");
+	free(r);
+	/* Subject says "Allocate (with malloc) and return a copy" — even when
+	 * nothing is trimmed, the result must be a fresh allocation, not the
+	 * input pointer. */
+	char buf[] = "no trim here";
+	r = ft_strtrim(buf, "x");
+	EXPECT(r && r != buf && strcmp(r, "no trim here") == 0,
+		"strtrim must return a fresh allocation, not the input pointer");
+	/* Only free if it's actually a heap allocation — a buggy impl that
+	 * returns `buf` (stack) would otherwise abort the run on free(). */
+	if (r != buf) free(r);
 #else
 	t->skipped = 1;
 #endif
@@ -856,6 +910,8 @@ static void	test_putnbr_fd(t_test *t)
 
 /* ──────────────────────────── linked list ──────────────────────────── */
 
+#ifdef HAVE_LIBFT_LIST
+
 static int	g_del_count;
 static int	g_iter_sum;
 
@@ -1031,6 +1087,8 @@ static void	test_lstmap(t_test *t)
 #endif
 }
 
+#endif /* HAVE_LIBFT_LIST */
+
 /* ──────────────────────────── dispatch ──────────────────────────── */
 
 typedef void (*test_fn_t)(t_test *);
@@ -1075,6 +1133,7 @@ static const t_entry TESTS[] = {
 	{ "ft_putstr_fd",    test_putstr_fd },
 	{ "ft_putendl_fd",   test_putendl_fd },
 	{ "ft_putnbr_fd",    test_putnbr_fd },
+#ifdef HAVE_LIBFT_LIST
 	{ "ft_lstnew",       test_lstnew },
 	{ "ft_lstadd_front", test_lstadd_front },
 	{ "ft_lstsize",      test_lstsize },
@@ -1084,6 +1143,7 @@ static const t_entry TESTS[] = {
 	{ "ft_lstclear",     test_lstclear },
 	{ "ft_lstiter",      test_lstiter },
 	{ "ft_lstmap",       test_lstmap },
+#endif
 };
 
 #define N_TESTS (sizeof(TESTS) / sizeof(TESTS[0]))

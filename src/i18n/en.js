@@ -67,7 +67,7 @@ module.exports = {
   'cc.pick': 'Pick an exercise:',
 
   'libft.pathPrompt': 'Path to libft directory (or press Enter to cancel):',
-  'libft.notLibft': 'not a libft project — needs Makefile, libft.h, and ft_*.c at the root.',
+  'libft.notLibft': 'not a libft project — needs at least one ft_*.c at the root.',
   'libft.areYouHere': 'Are you in your libft directory? ({cwd})',
   'libft.useThisDir': 'Yes — use this directory',
   'libft.enterPath': 'No — enter a path',

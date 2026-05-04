@@ -19,10 +19,12 @@ const ach = require('../utils/achievements');
 function recordTesterResult(result) {
   const passed = result && result.exitCode === 0 && result.stage === 'run';
   stats.recordTestRun({ targets: ['ft_printf'], passed });
+  const allFailed = result && result.stage === 'run' && ach.isTotalWipeout(result.stdout || '');
   ach.announceNew(ach.evaluate({
     event: 'test',
     targets: ['ft_printf'],
     passed,
+    allFailed,
     now: new Date(),
   }));
 }

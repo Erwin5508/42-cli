@@ -68,7 +68,7 @@ module.exports = {
 
   'libft.pathPrompt': 'Chemin vers le dossier libft (ou Entrée pour annuler) :',
   'libft.notLibft':
-    "ce n'est pas un projet libft — il faut Makefile, libft.h et ft_*.c à la racine.",
+    "ce n'est pas un projet libft — il faut au moins un ft_*.c à la racine.",
   'libft.areYouHere': 'Êtes-vous dans votre dossier libft ? ({cwd})',
   'libft.useThisDir': 'Oui — utiliser ce dossier',
   'libft.enterPath': 'Non — saisir un chemin',

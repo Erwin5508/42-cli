@@ -5,17 +5,41 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.2.4',
+    date: '2026-05-04',
+    notes_en: [
+      '"Test specific functions…" in the libft menu no longer needs your Makefile or libft.h. The runner now compiles each requested `ft_<fn>.c` directly under ASan, ships a fallback `libft.h` (used only when yours is missing — `#include "libft.h"` searches the source\'s own directory first), and you can test the one function you just wrote even with zero other functions implemented.',
+      'The libft tester gained a `HAVE_LIBFT_LIST` gate around the entire linked-list section (helpers, tests, dispatch entries). Testing a non-bonus subset like `ft_strlen` no longer fails to compile when `t_list` isn\'t declared anywhere — it just skips the bonus tests cleanly.',
+      'Per-function build errors get a precise diagnostic now: missing source files surface as "source file(s) not found: ft_xyz.c", a single failed compile shows "ft_xyz.c failed to compile" with the last 12 lines of compiler output. No more "make exited 2, good luck" lottery.',
+      'The libft menu accepts directories with just one `ft_*.c` at the root (Makefile and `libft.h` are no longer hard requirements). The strict 3-file check still applies to the ft_printf-with-libft flow that links a real `libft.a`.',
+      'gnl tester now runs `make fclean` on your gnl directory before each build (when a Makefile is present). Brings gnl in line with libft and ft_printf, both of which already auto-fclean — fresh code now always rebuilds, even if you forgot to clean manually. (Thanks Stann Carneiro / @scarneir.)',
+      'New legendary achievement "Total Wipeout ☠" — fail every single test in a single tester run (0 / N passed). Works across libft, ft_printf and gnl. (Thanks Samuel Daviot / @sdaviot.)',
+      'Contributors page now shows what each person contributed — a one-line reason next to their name when available. Welcome to Stann Carneiro and Samuel Daviot.',
+    ],
+    notes_fr: [
+      'Le menu libft « Tester des fonctions spécifiques… » ne dépend plus de votre Makefile ni de votre libft.h. Le testeur compile désormais chaque `ft_<fn>.c` demandé directement sous ASan, embarque un `libft.h` de secours (utilisé uniquement si le vôtre est absent — `#include "libft.h"` cherche d\'abord dans le dossier de la source), et vous pouvez tester la fonction que vous venez d\'écrire même avec zéro autre fonction implémentée.',
+      'Le testeur libft gagne une garde `HAVE_LIBFT_LIST` autour de toute la section liste chaînée (helpers, tests, entrées du dispatch). Tester un sous-ensemble non-bonus comme `ft_strlen` ne casse plus la compilation quand `t_list` n\'est déclaré nulle part — la section bonus est simplement omise.',
+      'Les erreurs de build par fonction sont désormais précises : un fichier source manquant s\'affiche « source file(s) not found: ft_xyz.c », un échec de compilation isolé affiche « ft_xyz.c failed to compile » avec les 12 dernières lignes du compilateur. Fini la loterie « make a renvoyé 2, bonne chance ».',
+      'Le menu libft accepte les dossiers contenant juste un `ft_*.c` à la racine (Makefile et `libft.h` ne sont plus des prérequis durs). Le contrôle strict des 3 fichiers reste en place pour le mode ft_printf-avec-libft qui lie une vraie `libft.a`.',
+      'Le testeur gnl exécute désormais `make fclean` sur votre dossier gnl avant chaque build (quand un Makefile est présent). Aligné avec libft et ft_printf qui font déjà ce nettoyage automatique — votre code à jour est toujours recompilé, même si vous avez oublié de nettoyer à la main. (Merci Stann Carneiro / @scarneir.)',
+      'Nouveau succès légendaire « Effacement total ☠ » — échouer absolument tous les tests d\'un même run (0 / N réussis). Fonctionne pour libft, ft_printf et gnl. (Merci Samuel Daviot / @sdaviot.)',
+      'La page Contributeurs affiche maintenant ce que chaque personne a apporté — une ligne descriptive à côté du nom quand elle est renseignée. Bienvenue à Stann Carneiro et Samuel Daviot.',
+    ],
+  },
+  {
     version: '0.2.3',
     date: '2026-05-04',
     notes_en: [
       'No more guessing paths: the ft_printf "with libft" mode now requires libft at the canonical `<project>/libft/` (the location the subject mandates) and, when missing, prints the exact path it expected with a one-line fix — instead of asking the student to type a path they don\'t know.',
       'Path prompts now tell you how to cancel: "Path to … (or press Enter to cancel)". Previously the only escape was Ctrl+C, which killed the CLI.',
       'ft_printf tester: a crash mid-test (e.g. SIGSEGV from `ft_printf("%s", NULL)` when your `ft_putstr` doesn\'t guard NULL) used to silently swallow every later group — you\'d see the groups that ran before the crash, then nothing at all, no CRASH line, no summary. Cause: stdout stayed redirected to the internal capture pipe after `siglongjmp`. The signal handler now restores stdout first, so the CRASH line, the remaining groups, and the final summary all print normally.',
+      '`ft_strtrim` test in the libft tester: every old case used a single-character `set`, where treating `set` as a substring is indistinguishable from treating it as a set of characters — so a wrong implementation would pass. Added six cases that pin the actual contract: multi-char set with mixed leading/trailing chars (`ft_strtrim("ab middle ba", "ab")` → `" middle "`), internal occurrences must be preserved, mixed-whitespace set, empty set, whole-string trim with multi-char set, and a check that the result is a fresh allocation (not the input pointer when nothing is trimmed).',
     ],
     notes_fr: [
       'Plus besoin de deviner un chemin : le mode « avec libft » exige désormais libft au seul emplacement canonique `<projet>/libft/` (celui que le sujet impose) et, en cas d\'absence, affiche le chemin exact attendu avec la correction à appliquer — au lieu de demander à l\'étudiant de taper un chemin qu\'il ne connaît pas.',
       'Les saisies de chemin indiquent maintenant comment annuler : « Chemin vers … (ou Entrée pour annuler) ». Avant, la seule issue était Ctrl+C, qui tuait le CLI.',
       'Testeur ft_printf : un crash en plein test (par ex. SIGSEGV sur `ft_printf("%s", NULL)` quand votre `ft_putstr` ne protège pas NULL) avalait silencieusement tous les groupes suivants — vous voyiez ceux exécutés avant le crash, puis plus rien du tout, ni ligne CRASH, ni résumé. Cause : stdout restait redirigé vers le pipe de capture interne après `siglongjmp`. Le gestionnaire de signal restaure désormais stdout d\'abord, et la ligne CRASH, les groupes restants et le résumé final s\'affichent normalement.',
+      'Test `ft_strtrim` du testeur libft : tous les anciens cas utilisaient un `set` d\'un seul caractère — situation où traiter `set` comme une sous-chaîne donne le même résultat que le traiter comme un ensemble de caractères, donc une implémentation fausse passait quand même. Ajout de six cas qui fixent le vrai contrat : set multi-caractères avec chars mélangés en début/fin (`ft_strtrim("ab middle ba", "ab")` → `" middle "`), les occurrences internes doivent être préservées, set d\'espaces variés, set vide, trim total avec set multi-caractères, et vérification que le résultat est une nouvelle allocation (pas le pointeur d\'entrée quand rien n\'est coupé).',
     ],
   },
   {

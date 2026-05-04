@@ -77,6 +77,13 @@ async function build(gnlPath, bufferSize) {
     streamStdout: false,
     streamStderr: false,
   };
+  // If the student keeps a Makefile alongside their gnl, fclean it too so a
+  // stale .o file from a manual build (different CFLAGS, BUFFER_SIZE baked
+  // in, header has changed) can't be reused under a different BUFFER_SIZE.
+  // gnl projects often ship without a Makefile — silently skip in that case.
+  if (fs.existsSync(path.join(gnlPath, 'Makefile'))) {
+    await spawnAsync('make', ['-C', gnlPath, 'fclean'], opts);
+  }
   // Always clean the tester dir between runs — same BUFFER_SIZE may appear
   // back-to-back, but we also iterate over multiple sizes so a stale .o from
   // the previous size would give wrong results silently.

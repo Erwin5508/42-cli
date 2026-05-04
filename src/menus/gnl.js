@@ -13,10 +13,17 @@ const ach = require('../utils/achievements');
 function recordTesterResult(result) {
   const passed = result && result.exitCode === 0 && result.stage === 'run';
   stats.recordTestRun({ targets: ['get_next_line'], passed });
+  // gnl runs the C tester once per BUFFER_SIZE — check the aggregate stdout
+  // (any individual run wiping out is enough; the runner concatenates them).
+  const aggregate = (result && result.runs)
+    ? result.runs.map((r) => r.stdout || '').join('\n')
+    : (result && result.stdout) || '';
+  const allFailed = result && result.stage === 'run' && ach.isTotalWipeout(aggregate);
   ach.announceNew(ach.evaluate({
     event: 'test',
     targets: ['get_next_line'],
     passed,
+    allFailed,
     now: new Date(),
   }));
 }

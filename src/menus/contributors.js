@@ -1,9 +1,13 @@
 'use strict';
 
 const { select } = require('../ui/select');
-const { t } = require('../i18n');
+const { t, getLanguage } = require('../i18n');
 const c = require('../ui/colors');
 const contributors = require('../data/contributors');
+
+function reasonOf(ct) {
+  return getLanguage() === 'fr' && ct.reason_fr ? ct.reason_fr : ct.reason_en;
+}
 
 async function contributorsMenu() {
   console.log();
@@ -11,6 +15,8 @@ async function contributorsMenu() {
   console.log(`  ${c.dim(t('contrib.intro'))}\n`);
   for (const ct of contributors) {
     console.log(`  ${c.cyan('·')} ${c.bold(ct.name)} ${c.dim(`(${ct.login})`)}`);
+    const reason = reasonOf(ct);
+    if (reason) console.log(`      ${c.dim('— ' + reason)}`);
   }
   console.log();
   await select({
