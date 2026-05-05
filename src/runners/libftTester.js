@@ -96,6 +96,15 @@ const FUNCTIONS = [
   'lstdelone', 'lstclear', 'lstiter', 'lstmap',
 ];
 
+// Bonus list tests build their fixtures with ft_lstnew (via build3 in tester.c
+// or directly). When picked in isolation, HAVE_FT_lstnew isn't defined, the
+// build3 fallback returns NULL, and assertions on a non-empty list fail with
+// no obvious cause. Warn the user up front so the failure isn't a mystery.
+const NEEDS_LSTNEW = [
+  'lstadd_front', 'lstsize', 'lstlast', 'lstadd_back',
+  'lstdelone', 'lstclear', 'lstiter', 'lstmap',
+];
+
 function spawnAsync(cmd, args, opts) {
   return new Promise((resolve) => {
     let stdout = '';
@@ -357,6 +366,13 @@ async function runTesterStandalone(libftPath, targets) {
       stage: 'setup',
       error: `Bundled tester source not found at ${TESTER_DIR}`,
     };
+  }
+
+  const needsLstnew = requested.filter((fn) => NEEDS_LSTNEW.includes(fn));
+  if (needsLstnew.length > 0 && !requested.includes('lstnew')) {
+    const list = needsLstnew.map((fn) => `ft_${fn}`).join(', ');
+    process.stdout.write(c.yellow(`  ⚠  ${list} build their test fixtures with ft_lstnew.\n`));
+    process.stdout.write(c.yellow('     Add ft_lstnew to the list or these tests will fail on empty fixtures.\n'));
   }
 
   process.stdout.write(c.dim('  building (standalone — no Makefile required)…\n'));

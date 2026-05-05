@@ -16,4 +16,7 @@ module.exports = [
   { name: 'Samuel Daviot',                login: 'sdaviot',
     reason_en: '"Total Wipeout" achievement — failing every test in a single run',
     reason_fr: 'succès « Effacement total » — échouer tous les tests d\'un même run' },
+  { name: 'Yanis Trabelsi',               login: 'ytrabels',
+    reason_en: 'spotted that picking ft_lstsize alone failed because build3 silently stubbed out without ft_lstnew',
+    reason_fr: 'a repéré que tester ft_lstsize seul échouait parce que build3 se neutralisait silencieusement sans ft_lstnew' },
 ];

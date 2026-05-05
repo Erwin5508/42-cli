@@ -5,6 +5,16 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.2.6',
+    date: '2026-05-05',
+    notes_en: [
+      'Picking a bonus list function on its own ("Test specific functions…") now warns up front when `ft_lstnew` is missing from the selection. The list-test fixtures (`build3` in tester.c, plus the direct calls in `lstadd_front` / `lstadd_back` / `lstdelone`) all need `ft_lstnew` to actually produce a list — when `HAVE_FT_lstnew` isn\'t defined, `build3` quietly returns NULL and the only assertion that passes is the `ft_lstsize(NULL) == 0` one, leaving the user staring at "1 / 2 passed" with no clue why. The runner now prints a yellow warning naming each affected target and tells you to add `ft_lstnew` before the build starts. Affects `ft_lstadd_front`, `ft_lstsize`, `ft_lstlast`, `ft_lstadd_back`, `ft_lstdelone`, `ft_lstclear`, `ft_lstiter`, `ft_lstmap`. (Thanks Yanis Trabelsi / @ytrabels for spotting the silent-failure mode.)',
+    ],
+    notes_fr: [
+      'Tester une fonction de liste bonus toute seule (« Tester des fonctions précises… ») affiche désormais un avertissement clair quand `ft_lstnew` n\'est pas dans la sélection. Les fixtures des tests de liste (`build3` dans tester.c, plus les appels directs dans `lstadd_front` / `lstadd_back` / `lstdelone`) ont besoin de `ft_lstnew` pour réellement construire une liste — quand `HAVE_FT_lstnew` n\'est pas défini, `build3` renvoie silencieusement NULL et la seule assertion qui passe est le `ft_lstsize(NULL) == 0`, laissant l\'utilisateur face à un « 1 / 2 passed » incompréhensible. Le runner imprime maintenant un avertissement jaune nommant chaque cible concernée et demande d\'ajouter `ft_lstnew` avant la compilation. Concerne `ft_lstadd_front`, `ft_lstsize`, `ft_lstlast`, `ft_lstadd_back`, `ft_lstdelone`, `ft_lstclear`, `ft_lstiter`, `ft_lstmap`. (Merci Yanis Trabelsi / @ytrabels d\'avoir identifié ce mode d\'échec silencieux.)',
+    ],
+  },
+  {
     version: '0.2.5',
     date: '2026-05-04',
     notes_en: [
