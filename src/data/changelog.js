@@ -5,6 +5,16 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.2.7',
+    date: '2026-05-08',
+    notes_en: [
+      'ft_printf tester now checks `ft_printf(NULL)` — calling ft_printf with **the format string itself** being NULL (not `%s` with a NULL argument, which was already covered in the `%s` group). The C standard leaves this undefined and glibc\'s printf segfaults on Linux, but the moulinette is known to grade implementations on this edge case and silent segfaults here have cost people their evaluation. The new "NULL format" group asserts that ft_printf must not crash and must return a non-positive value (typically `-1`); if your ft_printf does segfault, the existing crash handler catches it and reports `CRASH` instead of taking the whole run down with it.',
+    ],
+    notes_fr: [
+      'Le testeur ft_printf vérifie maintenant `ft_printf(NULL)` — appel de ft_printf avec **le format string lui-même** à NULL (pas `%s` avec un argument NULL, qui était déjà couvert dans le groupe `%s`). Le standard C laisse ce cas indéfini et le printf de la glibc segfaulte sous Linux, mais la moulinette est connue pour évaluer ce cas limite et un segfault silencieux ici a déjà coûté l\'éval à plusieurs personnes. Le nouveau groupe « NULL format » exige que ft_printf ne crashe pas et renvoie une valeur ≤ 0 (typiquement `-1`) ; si votre ft_printf segfaulte, le gestionnaire de crash existant l\'attrape et affiche `CRASH` au lieu de faire tomber tout le run avec lui.',
+    ],
+  },
+  {
     version: '0.2.6',
     date: '2026-05-05',
     notes_en: [

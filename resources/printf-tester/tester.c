@@ -318,6 +318,44 @@ static void	test_pf_return(t_test *t)
 #endif
 }
 
+/* ft_printf(NULL) — format string itself is NULL (not "%s" with a NULL
+ * argument, which is already covered in test_pf_string). The C standard
+ * leaves this undefined and glibc's printf segfaults, so we can't use CMP
+ * here — snprintf(NULL, ...) would crash the tester. Common moulinette
+ * expectation: must not crash, return value should be <= 0 (typically -1).
+ * If ft_printf does crash, the sigsetjmp in main() catches it and the
+ * group is reported as CRASH. */
+static void	test_pf_null_format(t_test *t)
+{
+#ifdef HAVE_FT_printf
+	char	got_[BUF];
+	int		rgot_ = 0;
+	int		n_ = 0;
+	int		p_[2];
+
+	got_[0] = 0;
+	if (pipe(p_) == 0)
+	{
+		int sv_ = dup(STDOUT_FILENO);
+		fflush(stdout);
+		dup2(p_[1], STDOUT_FILENO);
+		close(p_[1]);
+		rgot_ = ft_printf(NULL);
+		fflush(stdout);
+		dup2(sv_, STDOUT_FILENO);
+		close(sv_);
+		n_ = drain_pipe(p_[0], got_, sizeof got_);
+		close(p_[0]);
+	}
+	EXPECT(rgot_ <= 0,
+		"ft_printf(NULL) returned %d, printed %d bytes: \"%s\" "
+		"(expected: no crash, return <=0)",
+		rgot_, n_, got_);
+#else
+	t->skipped = 1;
+#endif
+}
+
 /* ──────────────────────────── dispatch ──────────────────────────── */
 
 typedef void (*test_fn_t)(t_test *);
@@ -339,6 +377,7 @@ static const t_entry TESTS[] = {
 	{ "%% (percent)",   test_pf_percent },
 	{ "mixed",          test_pf_mixed },
 	{ "return value",   test_pf_return },
+	{ "NULL format",    test_pf_null_format },
 };
 
 #define N_TESTS (sizeof(TESTS) / sizeof(TESTS[0]))
