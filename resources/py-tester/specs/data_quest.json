@@ -1,0 +1,161 @@
+{
+  "project": "data_quest",
+  "title": "Data Quest",
+  "note": "argv/stdin-driven exercises are checked exactly; the random ones (achievements, stream, alchemist) are smoke-checked (runs cleanly + emits the expected structure).",
+  "exercises": [
+    {
+      "id": "ex0",
+      "title": "Command Quest",
+      "file": "ex0/ft_command_quest.py",
+      "tests": [
+        {
+          "name": "no arguments",
+          "mode": "script",
+          "argv": [],
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "in_order", "items": ["=== Command Quest ===", "Program name: ft_command_quest.py", "No arguments provided!", "Total arguments: 1"] }
+          }
+        },
+        {
+          "name": "three arguments",
+          "mode": "script",
+          "argv": ["hello", "world", "42"],
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "in_order", "items": ["Arguments received: 3", "Argument 1: hello", "Argument 2: world", "Argument 3: 42", "Total arguments: 4"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex1",
+      "title": "Score Cruncher",
+      "file": "ex1/ft_score_analytics.py",
+      "tests": [
+        {
+          "name": "five scores -> full stats",
+          "mode": "script",
+          "argv": ["1500", "2300", "1800", "2100", "1950"],
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["[1500, 2300, 1800, 2100, 1950]", "Total players: 5", "Total score: 9650", "Average score: 1930.0", "High score: 2300", "Low score: 1500", "Score range: 800"] }
+          }
+        },
+        {
+          "name": "no scores -> usage",
+          "mode": "script",
+          "argv": [],
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["No scores provided"] } }
+        },
+        {
+          "name": "only invalid scores -> each flagged, then usage",
+          "mode": "script",
+          "argv": ["ab", "ac"],
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Invalid parameter: 'ab'", "Invalid parameter: 'ac'", "No scores provided"] } }
+        },
+        {
+          "name": "mixed valid/invalid -> invalid discarded",
+          "mode": "script",
+          "argv": ["10", "oops", "20"],
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Invalid parameter: 'oops'", "Total players: 2", "Total score: 30"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Position Tracker",
+      "file": "ex2/ft_coordinate_system.py",
+      "tests": [
+        {
+          "name": "(1,2,3) then (4,5,6): tuple, components, distances",
+          "mode": "script",
+          "stdin": "1,2,3\n4,5,6\n",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["(1.0, 2.0, 3.0)", "X=1.0", "Y=2.0", "Z=3.0", "3.7417", "5.1962"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Achievement Hunter (random)",
+      "file": "ex3/ft_achievement_tracker.py",
+      "tests": [
+        {
+          "name": "runs cleanly and reports set operations",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Player", "distinct achievements", "Common achievements", "is missing"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex4",
+      "title": "Inventory Master",
+      "file": "ex4/ft_inventory_system.py",
+      "tests": [
+        {
+          "name": "parses items, discards bad/redundant, computes stats",
+          "mode": "script",
+          "argv": ["sword:1", "potion:5", "shield:2", "armor:3", "helmet:1", "sword:2", "hello", "key:value"],
+          "match": {
+            "exit_code": 0,
+            "stdout": {
+              "type": "contains_all",
+              "items": [
+                "Redundant item 'sword'",
+                "invalid parameter 'hello'",
+                "Quantity error for 'key'",
+                "{'sword': 1, 'potion': 5, 'shield': 2, 'armor': 3, 'helmet': 1}",
+                "['sword', 'potion', 'shield', 'armor', 'helmet']",
+                "Total quantity of the 5 items: 12",
+                "8.3%",
+                "41.7%",
+                "16.7%",
+                "25.0%",
+                "most abundant: potion",
+                "least abundant: sword",
+                "magic_item"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex5",
+      "title": "Stream Wizard (random)",
+      "file": "ex5/ft_data_stream.py",
+      "tests": [
+        {
+          "name": "emits 1000 events then drains the 10-event list",
+          "mode": "script",
+          "timeout": 30,
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Event 0:", "Event 999:", "Built list of 10 events", "Got event from list", "Remains in list: []"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex6",
+      "title": "Data Alchemist (random)",
+      "file": "ex6/ft_data_alchemist.py",
+      "tests": [
+        {
+          "name": "builds comprehensions and a high-score dict",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Initial list of players", "capitalized", "Score dict", "Score average", "High scores"] }
+          }
+        }
+      ]
+    }
+  ]
+}

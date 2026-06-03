@@ -2,6 +2,7 @@
 
 const { select } = require('../ui/select');
 const commonCore = require('./commonCore');
+const pythonPiscine = require('./pythonPiscine');
 const { settingsMenu, manualUpdateCheck } = require('./settings');
 const { patchNotesMenu } = require('./patchNotes');
 const { achievementsMenu } = require('./achievements');
@@ -19,6 +20,7 @@ async function mainMenu(ctx = {}) {
       });
     }
     choices.push({ label: t('main.commonCore'), value: 'common' });
+    choices.push({ label: t('main.pythonPiscine'), value: 'python' });
     choices.push({ label: t('main.advancedCore'), value: 'advanced', disabled: t('common.comingSoon') });
     choices.push({ label: t('main.achievements'), value: 'achievements' });
     choices.push({ label: t('main.patchNotes'), value: 'patch' });
@@ -36,6 +38,9 @@ async function mainMenu(ctx = {}) {
       await manualUpdateCheck();
     } else if (choice === 'common') {
       const back = await commonCore.run();
+      if (back === 'quit') return;
+    } else if (choice === 'python') {
+      const back = await pythonPiscine.run();
       if (back === 'quit') return;
     } else if (choice === 'patch') {
       await patchNotesMenu();

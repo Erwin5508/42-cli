@@ -5,6 +5,16 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.3.0',
+    date: '2026-06-02',
+    notes_en: [
+      'New **Python Piscine** menu — testers for all seven Python data-engineering modules, run the same way as the C testers (point at the project root, run all tests or a single exercise, then flake8 / mypy). Covered: **Growing Code** (function I/O), **Garden Guardian** (exceptions), **Data Quest** (collections), **Code Cultivation** (OOP), **Code Nexus** (polymorphism/ABCs), **The Codex** (imports) and **Data Archivist** (file ops). Each exercise is checked against the behaviour its subject pins down: deterministic exercises (argv/stdin → output) are matched exactly, while the modules whose output the subject leaves to you (Code Cultivation, Code Nexus) and the random ones (Data Quest ex3/5/6) are smoke-checked — runs cleanly + emits the required structure. flake8 is the style gate (the Python "norminette") and mypy checks the typed exercises. Needs Python 3.10+ on your PATH; flake8/mypy are skipped with a hint if not installed.',
+    ],
+    notes_fr: [
+      'Nouveau menu **Piscine Python** — des testeurs pour les sept modules Python de data engineering, utilisés comme les testeurs C (pointez la racine du projet, lancez tous les tests ou un seul exercice, puis flake8 / mypy). Couverts : **Growing Code** (E/S de fonctions), **Garden Guardian** (exceptions), **Data Quest** (collections), **Code Cultivation** (POO), **Code Nexus** (polymorphisme/ABC), **The Codex** (imports) et **Data Archivist** (fichiers). Chaque exercice est vérifié selon ce que son sujet fixe : les exercices déterministes (argv/stdin → sortie) sont comparés exactement, tandis que les modules dont le sujet vous laisse la sortie (Code Cultivation, Code Nexus) et les exercices aléatoires (Data Quest ex3/5/6) sont vérifiés en « smoke test » — s\'exécute sans planter + produit la structure attendue. flake8 sert de garde de style (la « norminette » Python) et mypy vérifie les exercices typés. Nécessite Python 3.10+ dans votre PATH ; flake8/mypy sont ignorés avec une astuce s\'ils ne sont pas installés.',
+    ],
+  },
+  {
     version: '0.2.7',
     date: '2026-05-08',
     notes_en: [

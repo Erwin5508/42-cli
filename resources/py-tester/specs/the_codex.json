@@ -1,0 +1,123 @@
+{
+  "project": "the_codex",
+  "title": "The Codex",
+  "note": "Each script is run from the project root so your alchemy/ package resolves. The 'mystery' lines are yours; only the element/potion/recipe results the subject fixes are checked. ft_alembic_4 and ft_kaboom_1 are meant to raise.",
+  "exercises": [
+    {
+      "id": "alembic_0",
+      "title": "Alembic 0 — import elements.py, create fire",
+      "file": "ft_alembic_0.py",
+      "tests": [
+        { "name": "creates fire", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Fire element created"] } } }
+      ]
+    },
+    {
+      "id": "alembic_1",
+      "title": "Alembic 1 — from elements import, create water",
+      "file": "ft_alembic_1.py",
+      "tests": [
+        { "name": "creates water", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Water element created"] } } }
+      ]
+    },
+    {
+      "id": "alembic_2",
+      "title": "Alembic 2 — import alchemy/elements, create earth",
+      "file": "ft_alembic_2.py",
+      "tests": [
+        { "name": "creates earth", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Earth element created"] } } }
+      ]
+    },
+    {
+      "id": "alembic_3",
+      "title": "Alembic 3 — from alchemy/elements import, create air",
+      "file": "ft_alembic_3.py",
+      "tests": [
+        { "name": "creates air", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Air element created"] } } }
+      ]
+    },
+    {
+      "id": "alembic_4",
+      "title": "Alembic 4 — import alchemy (create_earth hidden)",
+      "file": "ft_alembic_4.py",
+      "tests": [
+        {
+          "name": "creates air; the hidden create_earth is not exposed",
+          "mode": "script",
+          "match": {
+            "stdout": { "type": "contains_all", "items": ["Air element created"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "alembic_5",
+      "title": "Alembic 5 — from alchemy import",
+      "file": "ft_alembic_5.py",
+      "tests": [
+        { "name": "creates air", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Air element created"] } } }
+      ]
+    },
+    {
+      "id": "distillation_0",
+      "title": "Distillation 0 — potions.py directly",
+      "file": "ft_distillation_0.py",
+      "tests": [
+        { "name": "brews strength and healing potions", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Strength potion brewed with", "Healing potion brewed with"] } } }
+      ]
+    },
+    {
+      "id": "distillation_1",
+      "title": "Distillation 1 — import alchemy, heal() alias",
+      "file": "ft_distillation_1.py",
+      "tests": [
+        { "name": "brews strength potion and the heal alias", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Strength potion brewed with", "Healing"] } } }
+      ]
+    },
+    {
+      "id": "transmutation_0",
+      "title": "Transmutation 0 — recipes.py directly",
+      "file": "ft_transmutation_0.py",
+      "tests": [
+        { "name": "transmutes lead to gold", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Recipe transmuting Lead to Gold"] } } }
+      ]
+    },
+    {
+      "id": "transmutation_1",
+      "title": "Transmutation 1 — import transmutation",
+      "file": "ft_transmutation_1.py",
+      "tests": [
+        { "name": "transmutes lead to gold", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Recipe transmuting Lead to Gold"] } } }
+      ]
+    },
+    {
+      "id": "transmutation_2",
+      "title": "Transmutation 2 — import alchemy",
+      "file": "ft_transmutation_2.py",
+      "tests": [
+        { "name": "transmutes lead to gold", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Recipe transmuting Lead to Gold"] } } }
+      ]
+    },
+    {
+      "id": "kaboom_0",
+      "title": "Kaboom 0 — light magic (no circular import)",
+      "file": "ft_kaboom_0.py",
+      "tests": [
+        { "name": "records a light spell without exploding", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Spell recorded"] } } }
+      ]
+    },
+    {
+      "id": "kaboom_1",
+      "title": "Kaboom 1 — dark magic (circular import explodes)",
+      "file": "ft_kaboom_1.py",
+      "tests": [
+        {
+          "name": "the circular import is triggered (raises ImportError)",
+          "mode": "script",
+          "match": {
+            "stderr": { "type": "regex", "pattern": "(circular import|ImportError|partially initialized)" }
+          }
+        }
+      ]
+    }
+  ]
+}

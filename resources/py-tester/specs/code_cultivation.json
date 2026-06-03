@@ -1,0 +1,91 @@
+{
+  "project": "code_cultivation",
+  "title": "Code Cultivation",
+  "note": "This module's exact output is yours to design (the subject states it is not strictly checked). These are smoke checks: each script must run without crashing and print the markers the subject asks for. Structure (classes, super(), encapsulation) is verified at the defense.",
+  "exercises": [
+    {
+      "id": "ex0",
+      "title": "Planting Your First Seed",
+      "file": "ex0/ft_garden_intro.py",
+      "tests": [
+        {
+          "name": "runs and prints plant info",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Plant", "Height", "Age"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex1",
+      "title": "Garden Data Organizer",
+      "file": "ex1/ft_garden_data.py",
+      "tests": [
+        {
+          "name": "runs and shows several plants (cm / days)",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["cm", "days"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Plant Growth Simulator",
+      "file": "ex2/ft_plant_growth.py",
+      "tests": [
+        {
+          "name": "runs and summarises weekly growth",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Day", "Growth"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Plant Factory",
+      "file": "ex3/ft_plant_factory.py",
+      "tests": [
+        {
+          "name": "runs and creates several plants",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["cm", "days"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex4",
+      "title": "Garden Security System",
+      "file": "ex4/ft_garden_security.py",
+      "tests": [
+        {
+          "name": "runs and rejects a negative value",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["negative"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex5",
+      "title": "Specialized Plant Types",
+      "file": "ex5/ft_plant_types.py",
+      "tests": [
+        {
+          "name": "runs and shows the three specialised types",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Color", "Trunk diameter", "Harvest season"] } }
+        }
+      ]
+    },
+    {
+      "id": "ex6",
+      "title": "Garden Analytics",
+      "file": "ex6/ft_garden_analytics.py",
+      "tests": [
+        {
+          "name": "runs and reports per-plant statistics",
+          "mode": "script",
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Stats:", "grow", "show"] } }
+        }
+      ]
+    }
+  ]
+}

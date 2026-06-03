@@ -1,0 +1,52 @@
+{
+  "project": "code_nexus",
+  "title": "Code Nexus",
+  "note": "Your test scenario is yours to write, so these are smoke checks: each script must run without crashing and print the polymorphic-processing markers the subject demonstrates. The ABC / Protocol / duck-typing design is verified at the defense.",
+  "exercises": [
+    {
+      "id": "ex0",
+      "title": "Data Processor",
+      "file": "ex0/data_processor.py",
+      "tests": [
+        {
+          "name": "runs; numeric/text/log processors validate, ingest, output",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Numeric Processor", "Text Processor", "Log Processor", "Got exception"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex1",
+      "title": "Polymorphic Data Stream",
+      "file": "ex1/data_stream.py",
+      "tests": [
+        {
+          "name": "runs; routes a mixed stream and prints per-processor stats",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["DataStream statistics", "items processed", "remaining"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Data Pipeline",
+      "file": "ex2/data_pipeline.py",
+      "tests": [
+        {
+          "name": "runs; exports via the CSV and JSON plugins",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["DataStream statistics", "CSV Output", "JSON Output"] }
+          }
+        }
+      ]
+    }
+  ]
+}

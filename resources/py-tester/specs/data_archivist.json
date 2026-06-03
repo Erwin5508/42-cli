@@ -1,0 +1,111 @@
+{
+  "project": "data_archivist",
+  "title": "Data Archivist",
+  "note": "Each script runs in a throwaway directory with a fixture file we supply, so nothing in your project is touched. Error-message text comes from the OS (errno), checked loosely. The permission-denied cases from the PDF are macOS-specific and are not reproduced here.",
+  "exercises": [
+    {
+      "id": "ex0",
+      "title": "Ancient Text Recovery",
+      "file": "ex0/ft_ancient_text.py",
+      "tests": [
+        {
+          "name": "no argument -> usage",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": [],
+          "match": { "stdout": { "type": "contains_all", "items": ["Usage"] } }
+        },
+        {
+          "name": "missing file -> handled error",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": ["foo"],
+          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["foo", "No such file or directory"] } }
+        },
+        {
+          "name": "existing file -> contents printed, file closed",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": ["ancient_fragment.txt"],
+          "fixtures": {
+            "ancient_fragment.txt": "[FRAGMENT 001] Digital preservation protocols established 2087\n[FRAGMENT 002] Knowledge must survive the entropy wars\n[FRAGMENT 003] Every byte saved is a victory against oblivion\n"
+          },
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["[FRAGMENT 001]", "[FRAGMENT 002]", "[FRAGMENT 003]", "closed"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex1",
+      "title": "Archive Creation",
+      "file": "ex1/ft_archive_creation.py",
+      "tests": [
+        {
+          "name": "empty filename -> appends '#', does not save",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": ["ancient_fragment.txt"],
+          "stdin": "\n",
+          "fixtures": {
+            "ancient_fragment.txt": "[FRAGMENT 001] Digital preservation protocols established 2087\n[FRAGMENT 002] Knowledge must survive the entropy wars\n"
+          },
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["2087#", "wars#", "Not saving"] }
+          }
+        },
+        {
+          "name": "filename given -> transformed content saved to disk",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": ["ancient_fragment.txt"],
+          "stdin": "new_fragment.txt\n",
+          "fixtures": {
+            "ancient_fragment.txt": "[FRAGMENT 001] Digital preservation protocols established 2087\n[FRAGMENT 002] Knowledge must survive the entropy wars\n"
+          },
+          "outputs": [
+            { "file": "new_fragment.txt", "match": { "type": "contains_all", "items": ["2087#", "wars#"] } }
+          ],
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["new_fragment.txt"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Stream Management",
+      "file": "ex2/ft_stream_management.py",
+      "tests": [
+        {
+          "name": "missing file -> error goes to stderr, not stdout",
+          "mode": "script",
+          "cwd": "temp",
+          "argv": ["foo"],
+          "match": {
+            "stderr": { "type": "contains_all", "items": ["foo", "No such file or directory"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex3",
+      "title": "Vault Security",
+      "file": "ex3/ft_vault_security.py",
+      "tests": [
+        {
+          "name": "secure_archive demo runs and prints (bool, str) tuples",
+          "mode": "script",
+          "cwd": "temp",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["(False,", "(True,"] }
+          }
+        }
+      ]
+    }
+  ]
+}

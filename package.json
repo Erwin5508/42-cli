@@ -1,7 +1,7 @@
 {
   "name": "42-cli",
-  "version": "0.2.7",
-  "description": "Interactive tester CLI for the 42 Common Core",
+  "version": "0.3.0",
+  "description": "Interactive tester CLI for the 42 Common Core and Python Piscine",
   "bin": {
     "42": "bin/42.js",
     "42cli": "bin/42.js"
