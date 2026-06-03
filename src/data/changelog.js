@@ -5,6 +5,16 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.3.1',
+    date: '2026-06-03',
+    notes_en: [
+      'Python Piscine testers no longer leave files behind in your project. A handful of exercises (the file-ops and exception modules) are tested by writing small fixture files next to your script and running it the way the subject demonstrates — but in the default "run in place" mode those fixtures were written into your own directory and never cleaned up, leaving stray files in your repo after a run (and silently overwriting a real file of yours if it happened to share the name). The tester now removes every fixture it creates once the test finishes, and only ever deletes files it actually wrote — any file that already existed before the run is left exactly as it was.',
+    ],
+    notes_fr: [
+      'Les testeurs de la Piscine Python ne laissent plus de fichiers dans votre projet. Quelques exercices (les modules fichiers et exceptions) sont testés en écrivant de petits fichiers de fixture à côté de votre script puis en le lançant comme le montre le sujet — mais en mode « exécution sur place » (par défaut) ces fixtures étaient écrites dans votre propre dossier et jamais supprimées, laissant des fichiers parasites dans votre dépôt après un run (et écrasant silencieusement un de vos vrais fichiers s\'il portait le même nom). Le testeur supprime désormais chaque fixture qu\'il crée une fois le test terminé, et ne supprime que les fichiers qu\'il a réellement écrits — tout fichier déjà présent avant le run est laissé intact.',
+    ],
+  },
+  {
     version: '0.3.0',
     date: '2026-06-02',
     notes_en: [

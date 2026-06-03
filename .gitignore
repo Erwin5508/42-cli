@@ -8,3 +8,7 @@ node_modules/
 resources/tester/42_tester
 resources/tester/*.dSYM/
 resources/tester/*.o
+
+# Python bytecode
+__pycache__/
+*.pyc

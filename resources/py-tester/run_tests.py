@@ -214,6 +214,11 @@ def run_script(test, file_path, project_dir):
     timeout = test.get("timeout", 15)
 
     tmp = None
+    # Fixtures written into the student's own directory (scriptdir mode) must be
+    # removed afterwards so a test run never leaves stray files behind — or, worse,
+    # clobbers a real file of the same name. We only delete fixtures we created
+    # that didn't already exist; pre-existing files are left untouched.
+    written_fixtures = []
     try:
         if cwd_mode == "temp":
             tmp = tempfile.mkdtemp(prefix="42pytest_")
@@ -226,7 +231,10 @@ def run_script(test, file_path, project_dir):
             invoke = os.path.basename(file_path)
 
         for fname, content in fixtures.items():
-            with open(os.path.join(cwd, fname), "w") as fh:
+            fixture_path = os.path.join(cwd, fname)
+            if not tmp and not os.path.exists(fixture_path):
+                written_fixtures.append(fixture_path)
+            with open(fixture_path, "w") as fh:
                 fh.write(content)
 
         try:
@@ -278,6 +286,11 @@ def run_script(test, file_path, project_dir):
     finally:
         if tmp:
             shutil.rmtree(tmp, ignore_errors=True)
+        for fixture_path in written_fixtures:
+            try:
+                os.remove(fixture_path)
+            except OSError:
+                pass
 
 
 # --------------------------------------------------------------------------
