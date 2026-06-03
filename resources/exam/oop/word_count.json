@@ -1,0 +1,13 @@
+{
+  "id": "word_count",
+  "title": "word_count",
+  "difficulty": 2,
+  "lang": "python",
+  "solution_file": "word_count.py",
+  "subject": "Write a program that reads one line from standard input and prints the number of words it contains, followed by a newline. Words are separated by any amount of whitespace.\n\nExample:\n  $ echo \"the quick brown fox\" | python3 word_count.py\n  4",
+  "tests": [
+    { "name": "4 words", "stdin": "the quick brown fox\n", "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "4" } } },
+    { "name": "extra spaces", "stdin": "   hello    world   \n", "match": { "stdout": { "type": "equals", "expected": "2" } } },
+    { "name": "empty line -> 0", "stdin": "\n", "match": { "stdout": { "type": "equals", "expected": "0" } } }
+  ]
+}

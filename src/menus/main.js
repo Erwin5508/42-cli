@@ -1,12 +1,12 @@
 'use strict';
 
 const { select } = require('../ui/select');
-const commonCore = require('./commonCore');
-const pythonPiscine = require('./pythonPiscine');
+const modulesScreen = require('./modulesScreen');
 const { settingsMenu, manualUpdateCheck } = require('./settings');
 const { patchNotesMenu } = require('./patchNotes');
 const { achievementsMenu } = require('./achievements');
 const { contributorsMenu } = require('./contributors');
+const { feedbackMenu } = require('./feedback');
 const { t } = require('../i18n');
 
 async function mainMenu(ctx = {}) {
@@ -19,12 +19,11 @@ async function mainMenu(ctx = {}) {
         value: 'update',
       });
     }
-    choices.push({ label: t('main.commonCore'), value: 'common' });
-    choices.push({ label: t('main.pythonPiscine'), value: 'python' });
-    choices.push({ label: t('main.advancedCore'), value: 'advanced', disabled: t('common.comingSoon') });
+    choices.push({ label: t('main.modules'), value: 'modules' });
     choices.push({ label: t('main.achievements'), value: 'achievements' });
     choices.push({ label: t('main.patchNotes'), value: 'patch' });
     choices.push({ label: t('main.contributors'), value: 'contributors' });
+    choices.push({ label: t('main.feedback'), value: 'feedback' });
     choices.push({ label: t('main.settings'), value: 'settings' });
     choices.push({ label: t('common.quit'), value: 'quit' });
 
@@ -36,11 +35,8 @@ async function mainMenu(ctx = {}) {
 
     if (choice === 'update') {
       await manualUpdateCheck();
-    } else if (choice === 'common') {
-      const back = await commonCore.run();
-      if (back === 'quit') return;
-    } else if (choice === 'python') {
-      const back = await pythonPiscine.run();
+    } else if (choice === 'modules') {
+      const back = await modulesScreen.run();
       if (back === 'quit') return;
     } else if (choice === 'patch') {
       await patchNotesMenu();
@@ -48,6 +44,8 @@ async function mainMenu(ctx = {}) {
       await achievementsMenu();
     } else if (choice === 'contributors') {
       await contributorsMenu();
+    } else if (choice === 'feedback') {
+      await feedbackMenu();
     } else if (choice === 'settings') {
       await settingsMenu();
     } else if (choice === 'quit') {

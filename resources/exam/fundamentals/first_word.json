@@ -1,0 +1,14 @@
+{
+  "id": "first_word",
+  "title": "first_word",
+  "difficulty": 2,
+  "lang": "c",
+  "solution_file": "first_word.c",
+  "subject": "Write a program that takes one string and prints its first word, followed by a newline. A word is a sequence of characters that are neither spaces nor tabs. Leading spaces/tabs are ignored.\n\nIf the number of arguments is not exactly 1, or the string has no word, print just a newline.\n\nExamples:\n  $ ./a.out \"Hello World\"\n  Hello\n  $ ./a.out \"   the quick brown\"\n  the",
+  "tests": [
+    { "name": "\"Hello World\" -> Hello", "argv": ["Hello World"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "Hello" } } },
+    { "name": "leading spaces", "argv": ["   the quick brown"], "match": { "stdout": { "type": "equals", "expected": "the" } } },
+    { "name": "single word", "argv": ["solo"], "match": { "stdout": { "type": "equals", "expected": "solo" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

@@ -144,6 +144,25 @@ function recordComplianceRun() {
   s.complianceRuns = (s.complianceRuns || 0) + 1;
 }
 
+// Record a graded Exam Practice batch (one or more exercises graded together).
+// Kept separate from recordTestRun so exam runs never pollute the per-libft-
+// function counters that drive the libft achievements.
+function recordExam({ graded, passedCount, allPassed, maxLevelPassed }) {
+  const s = load();
+  s.examRuns = (s.examRuns || 0) + 1;
+  s.examExercisesGraded = (s.examExercisesGraded || 0) + (graded || 0);
+  s.examExercisesPassed = (s.examExercisesPassed || 0) + (passedCount || 0);
+  if (allPassed) s.examPerfectRuns = (s.examPerfectRuns || 0) + 1;
+  if ((maxLevelPassed || 0) >= 4) s.examLevel4Passes = (s.examLevel4Passes || 0) + 1;
+  flush();
+}
+
+function recordFeedback() {
+  const s = load();
+  s.feedbackSent = (s.feedbackSent || 0) + 1;
+  flush();
+}
+
 function unlockAchievement(id) {
   const s = load();
   s.achievements = Array.isArray(s.achievements) ? s.achievements : [];
@@ -167,5 +186,6 @@ module.exports = {
   bumpPatchNotes, bumpSettings, bumpAchievementsView,
   bumpLanguageSwitch, bumpNameChange,
   recordTestRun, recordNorminetteRun, recordComplianceRun,
+  recordExam, recordFeedback,
   unlockAchievement,
 };

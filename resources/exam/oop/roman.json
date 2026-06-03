@@ -1,0 +1,14 @@
+{
+  "id": "roman",
+  "title": "roman",
+  "difficulty": 4,
+  "lang": "python",
+  "solution_file": "roman.py",
+  "subject": "Write a program that takes one integer between 1 and 3999 as a command-line argument and prints its Roman numeral representation, followed by a newline.\n\nExamples:\n  $ python3 roman.py 4\n  IV\n  $ python3 roman.py 1994\n  MCMXCIV\n  $ python3 roman.py 9\n  IX",
+  "tests": [
+    { "name": "4 -> IV", "argv": ["4"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "IV" } } },
+    { "name": "9 -> IX", "argv": ["9"], "match": { "stdout": { "type": "equals", "expected": "IX" } } },
+    { "name": "1994 -> MCMXCIV", "argv": ["1994"], "match": { "stdout": { "type": "equals", "expected": "MCMXCIV" } } },
+    { "name": "3888", "argv": ["3888"], "match": { "stdout": { "type": "equals", "expected": "MMMDCCCLXXXVIII" } } }
+  ]
+}

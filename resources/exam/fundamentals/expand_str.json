@@ -1,0 +1,14 @@
+{
+  "id": "expand_str",
+  "title": "expand_str",
+  "difficulty": 3,
+  "lang": "c",
+  "solution_file": "expand_str.c",
+  "subject": "Write a program that takes one string and prints it, followed by a newline, with leading and trailing spaces/tabs removed and every gap of spaces/tabs between words replaced by exactly three spaces.\n\nIf the number of arguments is not exactly 1, or the trimmed string is empty, print just a newline.\n\nExamples:\n  $ ./a.out \"  hello   world  \"\n  hello   world\n  $ ./a.out \"a b\"\n  a   b",
+  "tests": [
+    { "name": "trim + 3-space gaps", "argv": ["  hello   world  "], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "hello   world" } } },
+    { "name": "single space becomes three", "argv": ["a b"], "match": { "stdout": { "type": "equals", "expected": "a   b" } } },
+    { "name": "three words", "argv": ["the  quick brown"], "match": { "stdout": { "type": "equals", "expected": "the   quick   brown" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

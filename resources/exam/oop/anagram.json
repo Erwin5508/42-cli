@@ -1,0 +1,13 @@
+{
+  "id": "anagram",
+  "title": "anagram",
+  "difficulty": 3,
+  "lang": "python",
+  "solution_file": "anagram.py",
+  "subject": "Write a program that takes two words as command-line arguments and prints \"True\" if they are anagrams of each other (same letters, same counts, ignoring case), otherwise \"False\". End with a newline.\n\nExamples:\n  $ python3 anagram.py listen silent\n  True\n  $ python3 anagram.py hello world\n  False",
+  "tests": [
+    { "name": "listen/silent -> True", "argv": ["listen", "silent"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "True" } } },
+    { "name": "case insensitive", "argv": ["Dormitory", "DirtyRoom"], "match": { "stdout": { "type": "equals", "expected": "True" } } },
+    { "name": "not anagrams", "argv": ["hello", "world"], "match": { "stdout": { "type": "equals", "expected": "False" } } }
+  ]
+}

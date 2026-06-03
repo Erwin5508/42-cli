@@ -278,6 +278,45 @@ const ACHIEVEMENTS = [
     desc_fr: 'Lancer la vérification de conformité du sujet 5 fois.',
     check: (s) => (s.complianceRuns || 0) >= 5 },
 
+  // ───── EXAM PRACTICE ─────
+  { id: 'exam_rookie', rarity: 'common', badge: '📝',
+    name_en: 'Exam Rookie', name_fr: 'Bizut de l\'examen',
+    desc_en: 'Run Exam Practice for the first time.',
+    desc_fr: 'Lancer Exam Practice pour la première fois.',
+    check: (s) => (s.examRuns || 0) >= 1 },
+
+  { id: 'exam_ace', rarity: 'rare', badge: '🎯',
+    name_en: 'Flawless', name_fr: 'Sans-faute',
+    desc_en: 'Pass every exercise in a single exam.',
+    desc_fr: 'Réussir tous les exercices d\'un même examen.',
+    check: (s, ctx) => ctx && ctx.event === 'exam' && ctx.allPassed === true && (ctx.graded || 0) >= 1 },
+
+  { id: 'exam_hardcore', rarity: 'epic', badge: '🔥',
+    name_en: 'Hardcore', name_fr: 'Hardcore',
+    desc_en: 'Pass a level-4 (hardest) exam exercise.',
+    desc_fr: 'Réussir un exercice d\'examen de niveau 4 (le plus dur).',
+    check: (s) => (s.examLevel4Passes || 0) >= 1 },
+
+  // ───── FEEDBACK ─────
+  { id: 'feedback_first', rarity: 'common', badge: '💌',
+    name_en: 'Speak Up', name_fr: 'Prends la parole',
+    desc_en: 'Send your first piece of feedback.',
+    desc_fr: 'Envoyer votre premier retour.',
+    check: (s) => (s.feedbackSent || 0) >= 1 },
+
+  { id: 'bug_reporter', rarity: 'uncommon', badge: '🐞',
+    name_en: 'Bug Reporter', name_fr: 'Chasseur de bugs',
+    desc_en: 'Report a bug or a false pass (the CLI said OK but you failed).',
+    desc_fr: 'Signaler un bug ou un faux positif (le CLI a dit OK mais vous avez échoué).',
+    check: (s, ctx) => ctx && ctx.event === 'feedback' &&
+      (ctx.category === 'bug' || ctx.category === 'falsepass') },
+
+  { id: 'community_voice', rarity: 'rare', badge: '📣',
+    name_en: 'Voice of the Community', name_fr: 'Voix de la communauté',
+    desc_en: 'Send 5 pieces of feedback. The CLI gets better because of you.',
+    desc_fr: 'Envoyer 5 retours. Le CLI s\'améliore grâce à vous.',
+    check: (s) => (s.feedbackSent || 0) >= 5 },
+
   // ───── EXPLORATION ─────
   { id: 'bilingual', rarity: 'common', badge: '🌍',
     name_en: 'Bilingual', name_fr: 'Bilingue',

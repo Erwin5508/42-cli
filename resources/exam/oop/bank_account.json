@@ -1,0 +1,13 @@
+{
+  "id": "bank_account",
+  "title": "bank_account",
+  "difficulty": 4,
+  "lang": "python",
+  "solution_file": "bank_account.py",
+  "subject": "Write a program that simulates a bank account. Model it with a class that has a balance starting at 0 and methods deposit(amount) and withdraw(amount). A withdrawal that exceeds the current balance is refused (ignored, balance unchanged).\n\nRead commands from standard input, one per line: either \"deposit N\" or \"withdraw N\" (N a positive integer). After processing all commands, print the final balance followed by a newline.\n\nExample input:\n  deposit 100\n  withdraw 30\n  withdraw 1000\nExpected output:\n  70",
+  "tests": [
+    { "name": "deposit/withdraw with refusal", "stdin": "deposit 100\nwithdraw 30\nwithdraw 1000\n", "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "70" } } },
+    { "name": "only deposits", "stdin": "deposit 50\ndeposit 25\n", "match": { "stdout": { "type": "equals", "expected": "75" } } },
+    { "name": "withdraw refused from zero", "stdin": "withdraw 10\ndeposit 5\n", "match": { "stdout": { "type": "equals", "expected": "5" } } }
+  ]
+}

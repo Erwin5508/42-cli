@@ -1,0 +1,14 @@
+{
+  "id": "ft_strlen",
+  "title": "ft_strlen",
+  "difficulty": 1,
+  "lang": "c",
+  "solution_file": "ft_strlen.c",
+  "subject": "Write a program that takes one string as an argument and prints its number of characters, followed by a newline.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"hello\"\n  5\n  $ ./a.out\n  (empty line)",
+  "tests": [
+    { "name": "\"hello\" -> 5", "argv": ["hello"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "5" } } },
+    { "name": "\"42\" -> 2", "argv": ["42"], "match": { "stdout": { "type": "equals", "expected": "2" } } },
+    { "name": "empty string -> 0", "argv": [""], "match": { "stdout": { "type": "equals", "expected": "0" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

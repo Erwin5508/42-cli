@@ -1,0 +1,14 @@
+{
+  "id": "add_prime_sum",
+  "title": "add_prime_sum",
+  "difficulty": 4,
+  "lang": "c",
+  "solution_file": "add_prime_sum.c",
+  "subject": "Write a program that takes one argument: a positive integer N. It prints the sum of every prime number that is less than or equal to N, followed by a newline.\n\nIf the number of arguments is not exactly 1, or the number is negative, print just a newline (treat that as 0 only if you choose to). Use atoi-style parsing.\n\nExamples:\n  $ ./a.out 5\n  10\n  $ ./a.out 7\n  17",
+  "tests": [
+    { "name": "5 -> 2+3+5 = 10", "argv": ["5"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "10" } } },
+    { "name": "7 -> 2+3+5+7 = 17", "argv": ["7"], "match": { "stdout": { "type": "equals", "expected": "17" } } },
+    { "name": "2 -> 2", "argv": ["2"], "match": { "stdout": { "type": "equals", "expected": "2" } } },
+    { "name": "1 -> 0", "argv": ["1"], "match": { "stdout": { "type": "equals", "expected": "0" } } }
+  ]
+}

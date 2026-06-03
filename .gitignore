@@ -12,3 +12,6 @@ resources/tester/*.o
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Exam Practice workspaces (created in the user's cwd)
+exam-*/

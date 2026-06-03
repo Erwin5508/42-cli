@@ -1,0 +1,12 @@
+{
+  "id": "fizzbuzz",
+  "title": "fizzbuzz",
+  "difficulty": 2,
+  "lang": "python",
+  "solution_file": "fizzbuzz.py",
+  "subject": "Write a program that takes one integer N as a command-line argument and prints the numbers from 1 to N, one per line. For multiples of 3 print \"Fizz\" instead of the number, for multiples of 5 print \"Buzz\", and for multiples of both print \"FizzBuzz\".\n\nExample:\n  $ python3 fizzbuzz.py 5\n  1\n  2\n  Fizz\n  4\n  Buzz",
+  "tests": [
+    { "name": "1..5", "argv": ["5"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "1\n2\nFizz\n4\nBuzz" } } },
+    { "name": "1..15 ends FizzBuzz", "argv": ["15"], "match": { "stdout": { "type": "in_order", "items": ["Fizz", "Buzz", "FizzBuzz"] } } }
+  ]
+}

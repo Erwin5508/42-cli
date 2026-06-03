@@ -176,4 +176,4 @@ async function run() {
   }
 }
 
-module.exports = { run };
+module.exports = { run, projectMenu };

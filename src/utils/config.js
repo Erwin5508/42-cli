@@ -37,6 +37,12 @@ const DEFAULT_STATS = {
   norminetteRuns: 0,
   norminetteClean: 0,
   complianceRuns: 0,
+  examRuns: 0,
+  examExercisesGraded: 0,
+  examExercisesPassed: 0,
+  examPerfectRuns: 0,
+  examLevel4Passes: 0,
+  feedbackSent: 0,
   achievements: [],
 };
 
@@ -47,6 +53,7 @@ const DEFAULTS = {
   lastSeenVersion: null,
   lastFunIndex: -1,
   lastRunVersion: null,
+  localContributors: [],
   stats: DEFAULT_STATS,
 };
 
@@ -64,6 +71,19 @@ function read() {
   }
 }
 
+// Record someone who contributed feedback so they show up in the Contributors
+// list on their own machine. Deduped by login (or name when login is absent).
+function addLocalContributor(entry) {
+  const cur = read();
+  const list = Array.isArray(cur.localContributors) ? cur.localContributors.slice() : [];
+  const dup = list.some((x) =>
+    (entry.login && x.login === entry.login) || (!entry.login && x.name === entry.name));
+  if (dup) return false;
+  list.push(entry);
+  write({ localContributors: list });
+  return true;
+}
+
 function write(patch) {
   const merged = { ...read(), ...patch };
   try {
@@ -75,4 +95,4 @@ function write(patch) {
   return merged;
 }
 
-module.exports = { read, write, CONFIG_FILE, CONFIG_DIR, DEFAULT_STATS };
+module.exports = { read, write, addLocalContributor, CONFIG_FILE, CONFIG_DIR, DEFAULT_STATS };

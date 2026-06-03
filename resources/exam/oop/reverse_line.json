@@ -1,0 +1,12 @@
+{
+  "id": "reverse_line",
+  "title": "reverse_line",
+  "difficulty": 1,
+  "lang": "python",
+  "solution_file": "reverse_line.py",
+  "subject": "Write a program that reads one line from standard input and prints it reversed, followed by a newline.\n\nExample:\n  $ echo \"hello\" | python3 reverse_line.py\n  olleh",
+  "tests": [
+    { "name": "hello -> olleh", "stdin": "hello\n", "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "olleh" } } },
+    { "name": "with spaces", "stdin": "ab cd\n", "match": { "stdout": { "type": "equals", "expected": "dc ba" } } }
+  ]
+}

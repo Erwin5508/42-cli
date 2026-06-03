@@ -1,0 +1,13 @@
+{
+  "id": "fibonacci",
+  "title": "fibonacci",
+  "difficulty": 3,
+  "lang": "python",
+  "solution_file": "fibonacci.py",
+  "subject": "Write a program that takes one integer N as a command-line argument and prints the first N Fibonacci numbers (starting from 0, 1) on a single line, separated by single spaces, followed by a newline.\n\nIf N is 0 or negative, print just a newline.\n\nExamples:\n  $ python3 fibonacci.py 5\n  0 1 1 2 3\n  $ python3 fibonacci.py 1\n  0",
+  "tests": [
+    { "name": "first 5", "argv": ["5"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "0 1 1 2 3" } } },
+    { "name": "first 1", "argv": ["1"], "match": { "stdout": { "type": "equals", "expected": "0" } } },
+    { "name": "first 8", "argv": ["8"], "match": { "stdout": { "type": "equals", "expected": "0 1 1 2 3 5 8 13" } } }
+  ]
+}

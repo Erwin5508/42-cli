@@ -1,0 +1,14 @@
+{
+  "id": "celsius",
+  "title": "celsius",
+  "difficulty": 2,
+  "lang": "python",
+  "solution_file": "celsius.py",
+  "subject": "Write a program that reads one integer from standard input — a temperature in degrees Celsius — and prints the equivalent in degrees Fahrenheit, followed by a newline. Use integer arithmetic: F = C * 9 // 5 + 32.\n\nExample:\n  $ echo 100 | python3 celsius.py\n  212",
+  "tests": [
+    { "name": "100C -> 212F", "stdin": "100\n", "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "212" } } },
+    { "name": "0C -> 32F", "stdin": "0\n", "match": { "stdout": { "type": "equals", "expected": "32" } } },
+    { "name": "-40C -> -40F", "stdin": "-40\n", "match": { "stdout": { "type": "equals", "expected": "-40" } } },
+    { "name": "25C -> 77F", "stdin": "25\n", "match": { "stdout": { "type": "equals", "expected": "77" } } }
+  ]
+}

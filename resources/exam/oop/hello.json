@@ -1,0 +1,11 @@
+{
+  "id": "hello",
+  "title": "hello",
+  "difficulty": 1,
+  "lang": "python",
+  "solution_file": "hello.py",
+  "subject": "Write a program that prints exactly:\n\n  Hello, World!\n\nfollowed by a newline.",
+  "tests": [
+    { "name": "prints Hello, World!", "argv": [], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "Hello, World!" } } }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "rpn_calc",
+  "title": "rpn_calc",
+  "difficulty": 4,
+  "lang": "c",
+  "solution_file": "rpn_calc.c",
+  "subject": "Write a program that takes one argument: a Reverse Polish Notation expression made of integers and the operators + - * / separated by spaces. Evaluate it with a stack (integer arithmetic) and print the result followed by a newline.\n\nIn RPN, operands come before the operator: \"3 4 +\" means 3 + 4. If the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"3 4 +\"\n  7\n  $ ./a.out \"5 1 2 + 4 * + 3 -\"\n  14",
+  "tests": [
+    { "name": "\"3 4 +\" -> 7", "argv": ["3 4 +"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "7" } } },
+    { "name": "complex expression -> 14", "argv": ["5 1 2 + 4 * + 3 -"], "match": { "stdout": { "type": "equals", "expected": "14" } } },
+    { "name": "multiplication", "argv": ["6 7 *"], "match": { "stdout": { "type": "equals", "expected": "42" } } },
+    { "name": "single number", "argv": ["42"], "match": { "stdout": { "type": "equals", "expected": "42" } } }
+  ]
+}

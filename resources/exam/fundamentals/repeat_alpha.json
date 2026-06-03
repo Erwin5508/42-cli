@@ -1,0 +1,14 @@
+{
+  "id": "repeat_alpha",
+  "title": "repeat_alpha",
+  "difficulty": 2,
+  "lang": "c",
+  "solution_file": "repeat_alpha.c",
+  "subject": "Write a program that takes one string and prints it, repeating each alphabetical character as many times as its position in the alphabet (a/A = 1, b/B = 2, ... z/Z = 26). Case is preserved. Non-alphabetical characters are printed once. End with a newline.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"abc\"\n  abbccc\n  $ ./a.out \"Aa\"\n  Aa\n  $ ./a.out \"d!\"\n  dddd!",
+  "tests": [
+    { "name": "\"abc\" -> abbccc", "argv": ["abc"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "abbccc" } } },
+    { "name": "\"Aa\" -> Aa", "argv": ["Aa"], "match": { "stdout": { "type": "equals", "expected": "Aa" } } },
+    { "name": "\"d!\" -> dddd!", "argv": ["d!"], "match": { "stdout": { "type": "equals", "expected": "dddd!" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

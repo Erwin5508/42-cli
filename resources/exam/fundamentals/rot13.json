@@ -1,0 +1,14 @@
+{
+  "id": "rot13",
+  "title": "rot13",
+  "difficulty": 2,
+  "lang": "c",
+  "solution_file": "rot13.c",
+  "subject": "Write a program that takes one string and prints it with every letter replaced by the letter 13 positions ahead in the alphabet (wrapping around). Case is preserved, non-letters are unchanged. End with a newline.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"Hello\"\n  Uryyb\n  $ ./a.out \"abc\"\n  nop",
+  "tests": [
+    { "name": "\"Hello\" -> Uryyb", "argv": ["Hello"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "Uryyb" } } },
+    { "name": "\"abc\" -> nop", "argv": ["abc"], "match": { "stdout": { "type": "equals", "expected": "nop" } } },
+    { "name": "wraps z -> m", "argv": ["xyz"], "match": { "stdout": { "type": "equals", "expected": "klm" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

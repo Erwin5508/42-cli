@@ -1,0 +1,15 @@
+{
+  "id": "ft_atoi",
+  "title": "ft_atoi",
+  "difficulty": 3,
+  "lang": "c",
+  "solution_file": "ft_atoi.c",
+  "subject": "Write a program that takes one string and prints the integer it represents, followed by a newline, the way the standard atoi() reads it: skip leading whitespace (spaces and tabs), then an optional '+' or '-' sign, then digits, stopping at the first non-digit.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"42\"\n  42\n  $ ./a.out \"   -123abc\"\n  -123\n  $ ./a.out \"+7\"\n  7",
+  "tests": [
+    { "name": "\"42\" -> 42", "argv": ["42"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "42" } } },
+    { "name": "leading spaces and sign", "argv": ["   -123abc"], "match": { "stdout": { "type": "equals", "expected": "-123" } } },
+    { "name": "plus sign", "argv": ["+7"], "match": { "stdout": { "type": "equals", "expected": "7" } } },
+    { "name": "no digits -> 0", "argv": ["hello"], "match": { "stdout": { "type": "equals", "expected": "0" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "ulstr",
+  "title": "ulstr",
+  "difficulty": 1,
+  "lang": "c",
+  "solution_file": "ulstr.c",
+  "subject": "Write a program that takes one string and prints it with every lowercase letter turned to uppercase, followed by a newline. Every other character is printed unchanged.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"Hello World\"\n  HELLO WORLD\n  $ ./a.out \"abc123\"\n  ABC123",
+  "tests": [
+    { "name": "\"Hello World\"", "argv": ["Hello World"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "HELLO WORLD" } } },
+    { "name": "\"abc123\"", "argv": ["abc123"], "match": { "stdout": { "type": "equals", "expected": "ABC123" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

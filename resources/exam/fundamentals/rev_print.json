@@ -1,0 +1,14 @@
+{
+  "id": "rev_print",
+  "title": "rev_print",
+  "difficulty": 1,
+  "lang": "c",
+  "solution_file": "rev_print.c",
+  "subject": "Write a program that takes one string and prints it in reverse, followed by a newline.\n\nIf the number of arguments is not exactly 1, print just a newline.\n\nExamples:\n  $ ./a.out \"Hello\"\n  olleH\n  $ ./a.out \"42born\"\n  nrob24",
+  "tests": [
+    { "name": "\"Hello\" -> olleH", "argv": ["Hello"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "olleH" } } },
+    { "name": "\"42born\" -> nrob24", "argv": ["42born"], "match": { "stdout": { "type": "equals", "expected": "nrob24" } } },
+    { "name": "single char", "argv": ["z"], "match": { "stdout": { "type": "equals", "expected": "z" } } },
+    { "name": "no argument -> empty line", "argv": [], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

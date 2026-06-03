@@ -1,0 +1,14 @@
+{
+  "id": "wdmatch",
+  "title": "wdmatch",
+  "difficulty": 3,
+  "lang": "c",
+  "solution_file": "wdmatch.c",
+  "subject": "Write a program that takes two strings and prints the second one, followed by a newline, only if the first string can be written using the characters of the second string in order (the first string is a subsequence of the second). Otherwise print just a newline.\n\nIf the number of arguments is not exactly 2, print just a newline.\n\nExamples:\n  $ ./a.out \"abc\" \"aXbXc\"\n  aXbXc\n  $ ./a.out \"az\" \"ba\"\n  (empty line)",
+  "tests": [
+    { "name": "subsequence -> prints s2", "argv": ["abc", "aXbXc"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "aXbXc" } } },
+    { "name": "not a subsequence -> empty", "argv": ["az", "ba"], "match": { "stdout": { "type": "equals", "expected": "" } } },
+    { "name": "exact match", "argv": ["faya", "faya"], "match": { "stdout": { "type": "equals", "expected": "faya" } } },
+    { "name": "wrong arg count -> empty", "argv": ["abc"], "match": { "stdout": { "type": "equals", "expected": "" } } }
+  ]
+}

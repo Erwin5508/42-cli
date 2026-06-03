@@ -1,0 +1,13 @@
+{
+  "id": "vowel_count",
+  "title": "vowel_count",
+  "difficulty": 3,
+  "lang": "python",
+  "solution_file": "vowel_count.py",
+  "subject": "Write a program that reads one line from standard input and prints the number of vowels (a, e, i, o, u — both cases) it contains, followed by a newline.\n\nExample:\n  $ echo \"Hello World\" | python3 vowel_count.py\n  3",
+  "tests": [
+    { "name": "Hello World -> 3", "stdin": "Hello World\n", "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "3" } } },
+    { "name": "all vowels", "stdin": "AEIOUaeiou\n", "match": { "stdout": { "type": "equals", "expected": "10" } } },
+    { "name": "no vowels", "stdin": "rhythm\n", "match": { "stdout": { "type": "equals", "expected": "0" } } }
+  ]
+}

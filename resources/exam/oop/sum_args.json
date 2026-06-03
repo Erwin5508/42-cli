@@ -1,0 +1,13 @@
+{
+  "id": "sum_args",
+  "title": "sum_args",
+  "difficulty": 1,
+  "lang": "python",
+  "solution_file": "sum_args.py",
+  "subject": "Write a program that takes any number of integers as command-line arguments and prints their sum, followed by a newline.\n\nIf no arguments are given, print 0.\n\nExamples:\n  $ python3 sum_args.py 3 4 5\n  12\n  $ python3 sum_args.py\n  0",
+  "tests": [
+    { "name": "3 4 5 -> 12", "argv": ["3", "4", "5"], "match": { "exit_code": 0, "stdout": { "type": "equals", "expected": "12" } } },
+    { "name": "negatives", "argv": ["10", "-3", "-2"], "match": { "stdout": { "type": "equals", "expected": "5" } } },
+    { "name": "no args -> 0", "argv": [], "match": { "stdout": { "type": "equals", "expected": "0" } } }
+  ]
+}

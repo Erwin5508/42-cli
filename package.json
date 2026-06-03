@@ -1,7 +1,7 @@
 {
   "name": "42-cli",
-  "version": "0.3.1",
-  "description": "Interactive tester CLI for the 42 Common Core and Python Piscine",
+  "version": "0.4.0",
+  "description": "The all-in-one 42 tester — interactive CLI for the École 42 Common Core & Piscine: test libft, ft_printf, get_next_line, run norminette, grade Python projects with flake8/mypy, and sit randomized practice exams.",
   "bin": {
     "42": "bin/42.js",
     "42cli": "bin/42.js"
@@ -26,6 +26,28 @@
     "url": "https://github.com/brunogo25/42-cli/issues"
   },
   "homepage": "https://github.com/brunogo25/42-cli#readme",
-  "keywords": ["42", "libft", "norminette", "common-core", "cli"],
+  "keywords": [
+    "42",
+    "42-tester",
+    "42-school",
+    "ecole-42",
+    "42-common-core",
+    "42-piscine",
+    "python-piscine",
+    "libft",
+    "libft-tester",
+    "ft_printf",
+    "get_next_line",
+    "push_swap",
+    "norminette",
+    "moulinette",
+    "flake8",
+    "mypy",
+    "42-exam",
+    "exam-rank",
+    "42cursus",
+    "tester",
+    "cli"
+  ],
   "license": "MIT"
 }
