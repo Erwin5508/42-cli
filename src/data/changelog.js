@@ -5,6 +5,26 @@
 // and falls back to `notes_en` if missing.
 module.exports = [
   {
+    version: '0.4.2',
+    date: '2026-06-25',
+    notes_en: [
+      'Credited **Milan** in the Contributors list for helping with many things.',
+    ],
+    notes_fr: [
+      'Ajout de **Milan** dans la liste des Contributeurs pour son aide sur de nombreux aspects.',
+    ],
+  },
+  {
+    version: '0.4.1',
+    date: '2026-06-25',
+    notes_en: [
+      'Credited **diadjaff** in the Contributors list for flagging the **vowel_count** and **anagram** case-sensitivity tests in Exam Practice. Following that report — and questions about whether the Python release had knocked anything loose — the testers were re-verified end to end: the **libft fd-print tests** (`ft_putchar_fd`, `ft_putstr_fd`, `ft_putendl_fd`, `ft_putnbr_fd`) still pass every case, and the second test of both **vowel_count** (`AEIOUaeiou → 10`) and **anagram** (`Dormitory` vs `DirtyRoom → True`) correctly passes a correct solution and correctly rejects a case-broken one. No regression was found; the C tester was never touched by the Python work.',
+    ],
+    notes_fr: [
+      'Ajout de **diadjaff** dans la liste des Contributeurs pour avoir signalé les tests de sensibilité à la casse de **vowel_count** et **anagram** dans l\'Exam Practice. Suite à ce signalement — et aux doutes sur un éventuel dégât causé par la sortie Python — les testeurs ont été re-vérifiés de bout en bout : les **tests d\'affichage fd de la libft** (`ft_putchar_fd`, `ft_putstr_fd`, `ft_putendl_fd`, `ft_putnbr_fd`) passent toujours tous les cas, et le second test de **vowel_count** (`AEIOUaeiou → 10`) comme d\'**anagram** (`Dormitory` vs `DirtyRoom → True`) valide bien une solution correcte et rejette bien une solution insensible à la casse erronée. Aucune régression trouvée ; le testeur C n\'a jamais été modifié par les travaux Python.',
+    ],
+  },
+  {
     version: '0.4.0',
     date: '2026-06-03',
     notes_en: [
