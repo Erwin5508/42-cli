@@ -1,90 +1,62 @@
 {
   "project": "code_cultivation",
   "title": "Code Cultivation",
-  "note": "This module's exact output is yours to design (the subject states it is not strictly checked). These are smoke checks: each script must run without crashing and print the markers the subject asks for. Structure (classes, super(), encapsulation) is verified at the defense.",
+  "note": "The grille states this module's output is the student's to design and is NOT strictly checked; OOP structure (classes, __init__, encapsulation, super(), nested classes) is verified at the defense. So these are pure smoke checks: each required script runs without crashing and prints something. Use the peer-review questions for the structural grading.",
   "exercises": [
     {
       "id": "ex0",
-      "title": "Planting Your First Seed",
+      "title": "Planting Your First Seed (program structure)",
       "file": "ex0/ft_garden_intro.py",
       "tests": [
-        {
-          "name": "runs and prints plant info",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Plant", "Height", "Age"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex1",
-      "title": "Garden Data Organizer",
+      "title": "Garden Data Organizer (classes)",
       "file": "ex1/ft_garden_data.py",
       "tests": [
-        {
-          "name": "runs and shows several plants (cm / days)",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["cm", "days"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex2",
-      "title": "Plant Growth Simulator",
+      "title": "Plant Growth Simulator (methods)",
       "file": "ex2/ft_plant_growth.py",
       "tests": [
-        {
-          "name": "runs and summarises weekly growth",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Day", "Growth"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex3",
-      "title": "Plant Factory",
+      "title": "Plant Factory (__init__)",
       "file": "ex3/ft_plant_factory.py",
       "tests": [
-        {
-          "name": "runs and creates several plants",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["cm", "days"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex4",
-      "title": "Garden Security System",
+      "title": "Garden Security System (encapsulation)",
       "file": "ex4/ft_garden_security.py",
       "tests": [
-        {
-          "name": "runs and rejects a negative value",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["negative"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex5",
-      "title": "Specialized Plant Types",
+      "title": "Specialized Plant Types (inheritance)",
       "file": "ex5/ft_plant_types.py",
       "tests": [
-        {
-          "name": "runs and shows the three specialised types",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Color", "Trunk diameter", "Harvest season"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     },
     {
       "id": "ex6",
-      "title": "Garden Analytics",
+      "title": "Garden Analytics (advanced OOP)",
       "file": "ex6/ft_garden_analytics.py",
       "tests": [
-        {
-          "name": "runs and reports per-plant statistics",
-          "mode": "script",
-          "match": { "exit_code": 0, "stdout": { "type": "contains_all", "items": ["Stats:", "grow", "show"] } }
-        }
+        { "name": "runs without crashing and prints output", "mode": "script", "match": { "exit_code": 0, "stdout": { "type": "not_empty" } } }
       ]
     }
   ]
