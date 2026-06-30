@@ -50,6 +50,13 @@ const PROJECTS = [
     subtitle: 'file operations & streams',
     spec: 'data_archivist.json',
   },
+  {
+    id: 'cosmic_data',
+    title: 'Cosmic Data',
+    subtitle: 'Pydantic models & validation',
+    spec: 'cosmic_data.json',
+    mypy: true,
+  },
 ];
 
 function byId(id) {

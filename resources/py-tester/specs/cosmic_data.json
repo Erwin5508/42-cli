@@ -1,0 +1,76 @@
+{
+  "project": "cosmic_data",
+  "title": "Cosmic Data",
+  "note": "Pydantic v2 module. Each exercise runs as a script and must show BOTH a valid model and a handled validation error. Output wording is the student's, so these are smoke checks: the script runs (exit 0), references its model, and surfaces a Pydantic 'validation error'. Field constraints, @model_validator rules, enums and nested models are verified at the defense.",
+  "exercises": [
+    {
+      "id": "ex0",
+      "title": "Space Station Data",
+      "file": "ex0/space_station.py",
+      "tests": [
+        {
+          "name": "runs and references the SpaceStation model",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Station"] }
+          }
+        },
+        {
+          "name": "demonstrates a handled validation error (e.g. crew_size > 20)",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["validation error"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex1",
+      "title": "Alien Contact Data",
+      "file": "ex1/alien_contact.py",
+      "tests": [
+        {
+          "name": "runs and shows an 'AC'-prefixed contact id",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["AC"] }
+          }
+        },
+        {
+          "name": "demonstrates a handled validation error (custom rule)",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["validation error"] }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ex2",
+      "title": "Space Crew Data",
+      "file": "ex2/space_crew.py",
+      "tests": [
+        {
+          "name": "runs and references the SpaceMission model",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["Mission"] }
+          }
+        },
+        {
+          "name": "demonstrates a handled validation error (invalid mission)",
+          "mode": "script",
+          "match": {
+            "exit_code": 0,
+            "stdout": { "type": "contains_all", "items": ["validation error"] }
+          }
+        }
+      ]
+    }
+  ]
+}
